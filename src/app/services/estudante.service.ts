@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
@@ -14,7 +14,7 @@ export interface EstudanteCadastro {
   providedIn: 'root'
 })
 export class EstudanteService {
-  constructor(private http: HttpClient) {}
+  private http = inject(HttpClient);
 
   create(estudante: EstudanteCadastro): Observable<{ message?: string }> {
     const url = `${environment.apiUrl}estudantes`;

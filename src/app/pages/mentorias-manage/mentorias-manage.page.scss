@@ -1,0 +1,136 @@
+@use '../../shared/app-page';
+
+.feedback,
+.form-card,
+.manage-card,
+.empty {
+  background: #ffffff;
+  border: 1px solid rgba(71, 43, 122, 0.12);
+  border-radius: 20px;
+  box-shadow: 0 16px 42px rgba(71, 43, 122, 0.09);
+}
+
+.feedback {
+  color: #472b7a;
+  font-weight: 800;
+  padding: 14px 18px;
+}
+
+.form-card,
+.manage-card,
+.empty {
+  padding: 24px;
+}
+
+h2 {
+  color: #2f1b52;
+  margin: 0 0 16px;
+}
+
+form,
+label {
+  display: grid;
+  gap: 8px;
+}
+
+form {
+  gap: 14px;
+}
+
+label {
+  color: #472b7a;
+  font-weight: 800;
+}
+
+input,
+textarea,
+select {
+  border: 1px solid rgba(71, 43, 122, 0.22);
+  border-radius: 14px;
+  color: #2f1b52;
+  font-family: Roboto, Arial, sans-serif;
+  font-size: 15px;
+  padding: 12px 14px;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.actions,
+.card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+button,
+a {
+  border-radius: 999px;
+  font-weight: 800;
+  min-height: 40px;
+  padding: 10px 14px;
+}
+
+button {
+  background: #472b7a;
+  border: 0;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+a,
+.ghost {
+  background: #f7f3ff;
+  border: 1px solid rgba(71, 43, 122, 0.12);
+  color: #472b7a;
+  text-decoration: none;
+}
+
+.manage-list {
+  display: grid;
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.status {
+  background: #fff3cd;
+  border-radius: 999px;
+  color: #472b7a;
+  display: inline-flex;
+  font-size: 12px;
+  font-weight: 900;
+  margin-bottom: 12px;
+  padding: 7px 10px;
+}
+
+.manage-card p,
+.empty p {
+  color: #5d477d;
+  line-height: 1.6;
+}
+
+.participants {
+  border-top: 1px solid rgba(71, 43, 122, 0.1);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+  padding-top: 14px;
+
+  span {
+    background: #fbf9ff;
+    border-radius: 999px;
+    color: #472b7a;
+    font-weight: 800;
+    padding: 8px 10px;
+  }
+}
+
+@media (max-width: 840px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+}

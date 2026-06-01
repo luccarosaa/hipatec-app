@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
@@ -14,7 +14,7 @@ export interface MentoraCadastro {
   providedIn: 'root'
 })
 export class MentoraService {
-  constructor(private http: HttpClient) {}
+  private http = inject(HttpClient);
 
   create(mentora: MentoraCadastro): Observable<{ message?: string }> {
     const url = `${environment.apiUrl}mentoras`;

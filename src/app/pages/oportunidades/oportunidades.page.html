@@ -1,0 +1,50 @@
+<app-navbar></app-navbar>
+
+<ion-content [fullscreen]="true">
+<main class="app-page oportunidades-page">
+  <section class="page-hero">
+    <div>
+      <span>Oportunidades</span>
+      <h1>Vagas, eventos e oficinas para crescer em tecnologia.</h1>
+      <p>Uma curadoria simples para aproximar estudantes de experiências práticas, programas afirmativos e conteúdos úteis.</p>
+    </div>
+    <aside>
+      <strong>{{ filtradas.length }}</strong>
+      <p>Itens encontrados no filtro atual</p>
+    </aside>
+  </section>
+
+  <section class="filters" aria-label="Filtros de oportunidades">
+    <button type="button" [class.active]="filtro === 'todas'" (click)="filtro = 'todas'">Todas</button>
+    <button type="button" [class.active]="filtro === 'vaga'" (click)="filtro = 'vaga'">Vagas</button>
+    <button type="button" [class.active]="filtro === 'evento'" (click)="filtro = 'evento'">Eventos</button>
+    <button type="button" [class.active]="filtro === 'oficina'" (click)="filtro = 'oficina'">Oficinas</button>
+    <button type="button" [class.active]="filtro === 'conteudo'" (click)="filtro = 'conteudo'">Conteúdos</button>
+  </section>
+
+  <section class="opportunities-grid" *ngIf="filtradas.length; else vazio">
+    <article class="opportunity-card" *ngFor="let item of filtradas">
+      <span class="type">{{ item.tipo }}</span>
+      <h2>{{ item.titulo }}</h2>
+      <p>{{ item.descricao }}</p>
+      <dl>
+        <div><dt>Organização</dt><dd>{{ item.organizacao }}</dd></div>
+        <div><dt>Local</dt><dd>{{ item.local }}</dd></div>
+        <div><dt>Prazo</dt><dd>{{ item.prazo }}</dd></div>
+      </dl>
+      <div class="tags">
+        <span *ngFor="let tag of item.tags">{{ tag }}</span>
+      </div>
+      <button type="button">Salvar oportunidade</button>
+    </article>
+  </section>
+
+  <ng-template #vazio>
+    <section class="empty-state">
+      <h2>Nenhuma oportunidade neste filtro.</h2>
+      <p>Tente outra categoria ou volte para todas as oportunidades disponíveis no protótipo.</p>
+    </section>
+  </ng-template>
+</main>
+  <app-footer [compact]="true"></app-footer>
+</ion-content>

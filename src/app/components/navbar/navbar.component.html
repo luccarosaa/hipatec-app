@@ -1,39 +1,68 @@
 <ion-header class="ion-no-border">
   <ion-toolbar class="navbar-container">
-    
     <ion-buttons slot="start">
-      <div class="logo-container">
-      <img src="assets/logo_roxo.png" alt="Hipatec Logo" class="logo-img">
-      </div>
+      <a class="logo-container" routerLink="/feed" aria-label="Hipatec feed" (click)="closeMenu()">
+        <img src="assets/logo_roxo.png" alt="Hipatec Logo" class="logo-img">
+      </a>
     </ion-buttons>
 
-    <div class="search-box">
-      <ion-searchbar placeholder="digite aqui para buscar..." class="custom-search"></ion-searchbar>
-      <ion-icon name="star-outline" class="star-icon"></ion-icon>
-    </div>
+    <nav class="nav-links" aria-label="Navegação principal">
+      <a routerLink="/feed" routerLinkActive="active">Feed</a>
+      <a routerLink="/mentorias" routerLinkActive="active">Mentorias</a>
+      <a routerLink="/oportunidades" routerLinkActive="active">Oportunidades</a>
+      <a routerLink="/apoio" routerLinkActive="active">Apoio</a>
+      <a routerLink="/perfil" routerLinkActive="active">Perfil</a>
+    </nav>
 
-    <ion-buttons slot="end">
-      <ion-button routerLink="/home" fill="clear">home</ion-button>
-
-      <ion-button id="popover-button" fill="clear">aprendizado</ion-button>
-      
-      <ion-button routerLink="/vagas" fill="clear">vagas</ion-button>
-
-      <ion-avatar class="user-avatar">
-        <img src="https://ionicframework.com/docs/img/demos/avatar.svg" />
-      </ion-avatar>
+    <ion-buttons slot="end" class="desktop-actions">
+      <button class="avatar-button" type="button" (click)="toggleUserMenu($event)" [attr.aria-expanded]="userMenuOpen" aria-controls="user-menu" [attr.aria-label]="'Menu de ' + nome">
+        <img *ngIf="foto" [src]="foto" alt="" />
+        <span *ngIf="!foto">{{ nome.slice(0, 1) }}</span>
+      </button>
     </ion-buttons>
 
-    <ion-popover trigger="popover-button" triggerAction="click">
-      <ng-template>
-        <ion-content>
-          <ion-list lines="none">
-            <ion-item [button]="true" routerLink="/painel">painel</ion-item>
-            <ion-item [button]="true" routerLink="/meu-aprendizado">meu aprendizado</ion-item>
-          </ion-list>
-        </ion-content>
-      </ng-template>
-    </ion-popover>
-
+    <ion-buttons slot="end" class="mobile-actions">
+      <button
+        class="menu-toggle"
+        type="button"
+        (click)="toggleMenu()"
+        [attr.aria-expanded]="menuOpen"
+        aria-controls="mobile-menu"
+        aria-label="Abrir menu de navegação">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </ion-buttons>
   </ion-toolbar>
+
+
+  <div class="user-menu-backdrop" *ngIf="userMenuOpen" (click)="closeMenu()"></div>
+  <section class="user-dropdown" id="user-menu" *ngIf="userMenuOpen">
+    <a routerLink="/perfil" (click)="closeMenu()">Ver perfil</a>
+    <a routerLink="/perfil/editar" (click)="closeMenu()">Editar perfil</a>
+    <a routerLink="/configuracoes" (click)="closeMenu()">Configurações</a>
+    <button type="button" (click)="logout()">Sair</button>
+  </section>
+  <div class="mobile-menu" id="mobile-menu" [class.open]="menuOpen">
+    <div class="mobile-menu-card">
+      <div class="mobile-user">
+        <div class="avatar-button"><img *ngIf="foto" [src]="foto" alt="" /><span *ngIf="!foto">{{ nome.slice(0, 1) }}</span></div>
+        <div>
+          <strong>{{ nome }}</strong>
+          <span>Comunidade Hipatec</span>
+        </div>
+      </div>
+
+      <nav aria-label="Menu mobile">
+        <a routerLink="/feed" (click)="closeMenu()">Feed</a>
+        <a routerLink="/mentorias" (click)="closeMenu()">Mentorias</a>
+        <a routerLink="/oportunidades" (click)="closeMenu()">Oportunidades</a>
+        <a routerLink="/apoio" (click)="closeMenu()">Apoio</a>
+        <a routerLink="/perfil" (click)="closeMenu()">Perfil</a>
+      </nav>
+
+      <button class="mobile-logout" type="button" (click)="logout()">Sair da conta</button>
+    </div>
+  </div>
 </ion-header>

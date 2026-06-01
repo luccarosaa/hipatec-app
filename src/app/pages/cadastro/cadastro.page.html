@@ -1,43 +1,59 @@
 <div class="container">
-    
-    <div class="panel-left">
-      <div class="logo-box">
-        <img src="assets/logo_hipatec_roxo.png" alt="Hipatec" class="logo-img" />
-      </div>
-      <h2 class="comunidade-text">Junte-se à <span>&lt;Comunidade&gt;</span></h2>
-      <p class="subtitle-text">
-        Crie sua conta para se conectar, aprender e crescer com outras mulheres na tecnologia.
-      </p>
+  <div class="panel-left">
+    <a class="logo-box" routerLink="/home" aria-label="Voltar para a landing Hipatec">
+      <img src="assets/logo_hipatec_roxo.png" alt="Hipatec" class="logo-img" />
+    </a>
+    <h2 class="comunidade-text">Junte-se à <span>&lt;Comunidade&gt;</span></h2>
+    <p class="subtitle-text">
+      Crie sua conta para se conectar, encontrar mentoria e crescer com outras mulheres na tecnologia.
+    </p>
+  </div>
+
+  <main>
+    <p class="form-eyebrow">Cadastro Hipatec</p>
+    <h1 class="register-title">Crie sua conta</h1>
+
+    <ion-segment [value]="role" (ionChange)="switchRole($event)">
+      <ion-segment-button value="estudantes">
+        <ion-label>Estudante</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="mentoras">
+        <ion-label>Mentora</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+
+    <div class="input-group">
+      <label>Nome completo</label>
+      <input type="text" [(ngModel)]="nome" placeholder="digite seu Nome completo" />
     </div>
 
-    <main>
-      <h1 class="register-title">Crie sua conta</h1>
+    <div class="input-group">
+      <label>Nome de usuário</label>
+      <input type="text" [(ngModel)]="username" placeholder="Ex: anaclara" />
+    </div>
 
-      <div class="input-group">
-        <label>nome completo</label>
-        <input type="text" [(ngModel)]="nome" placeholder="digite seu nome completo" />
-      </div>
+    <div class="input-group">
+      <label>Data de nascimento</label>
+      <input type="date" [(ngModel)]="dataNascimento" />
+    </div>
 
-      <div class="input-group">
-        <label>data de nascimento</label>
-        <input type="text" [(ngModel)]="dataNascimento" placeholder="dd / mm / aaaa" onfocus="(this.type='date')" onblur="(this.type='text')" />
-      </div>
+    <div class="input-group">
+      <label>Email</label>
+      <input type="email" [(ngModel)]="email" placeholder="seuemail@exemplo.com" />
+    </div>
 
-      <div class="input-group">
-        <label>email</label>
-        <input type="email" [(ngModel)]="email" placeholder="seuemail@exemplo.com" />
-      </div>
+    <div class="input-group">
+      <label>Senha</label>
+      <input type="password" [(ngModel)]="senha" placeholder="8 a 18 caracteres com A-z, número e símbolo" />
+    </div>
 
-      <div class="input-group">
-        <label>senha</label>
-        <input type="password" [(ngModel)]="senha" placeholder="digite sua senha" />
-      </div>
+    <p class="feedback" *ngIf="feedback">{{ feedback }}</p>
 
-      <button class="btn-register" (click)="cadastrar()">cadastrar</button>
+    <button class="btn-register" (click)="cadastrar()">Cadastrar</button>
 
-      <div class="register-footer-links">
-        <a class="footer-link" routerLink="/login">já possui uma conta?</a>
-      </div>
-    </main>
-
+    <div class="register-footer-links">
+      <a class="footer-link" routerLink="/login">Já possui uma conta?</a>
+      <a class="footer-link" routerLink="/home">Voltar para apresentação</a>
+    </div>
+  </main>
 </div>

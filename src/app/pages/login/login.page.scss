@@ -162,3 +162,53 @@ ion-segment{
 h2.login-title{
   color: #472b7a;
 }
+
+.form-eyebrow {
+  color: #7b59b8;
+  font-family: 'Roboto', sans-serif;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0;
+  margin: 0 0 8px;
+  text-transform: uppercase;
+}
+
+.feedback {
+  background: #fff3cd;
+  border: 1px solid rgba(71, 43, 122, 0.12);
+  border-radius: 10px;
+  color: #472b7a;
+  font-family: 'Roboto', sans-serif;
+  font-size: 13px;
+  line-height: 1.45;
+  margin: 0 0 12px;
+  padding: 10px 12px;
+  text-align: left;
+}
+
+.logo-box {
+  cursor: pointer;
+}
+
+@media (max-width: 720px) {
+  .gradient-bg {
+    min-height: 100vh;
+    height: auto;
+    padding: 18px;
+  }
+
+  .container {
+    margin: 0;
+    min-height: calc(100vh - 36px);
+    height: auto;
+    padding: 24px 18px;
+  }
+
+  main {
+    padding: 28px 20px;
+  }
+
+  .logo-box .logo-img {
+    height: 82px;
+  }
+}

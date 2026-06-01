@@ -160,3 +160,58 @@ main {
     display: none;
   }
 }
+
+.form-eyebrow {
+  color: #7b59b8;
+  font-family: 'Roboto', sans-serif;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0;
+  margin: 0 0 8px;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.feedback {
+  background: #fff3cd;
+  border: 1px solid rgba(71, 43, 122, 0.12);
+  border-radius: 10px;
+  color: #472b7a;
+  font-family: 'Roboto', sans-serif;
+  font-size: 13px;
+  line-height: 1.45;
+  margin: 0 0 12px;
+  padding: 10px 12px;
+}
+
+.logo-box {
+  cursor: pointer;
+}
+
+ion-segment {
+  --indicator-color: #472b7a;
+  --background: #ffffff;
+  --color: #472b7a;
+  margin: 0 0 22px;
+
+  ion-segment-button {
+    --color: #7b59b8 !important;
+    --color-checked: #472b7a !important;
+    font-family: 'Roboto', sans-serif;
+    text-transform: lowercase;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    min-height: 100vh;
+    height: auto;
+  }
+
+  main {
+    max-width: none;
+    width: 100%;
+    min-height: 100vh;
+    padding: 34px 24px;
+  }
+}

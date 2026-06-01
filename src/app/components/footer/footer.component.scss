@@ -1,0 +1,60 @@
+.hipatec-footer {
+  width: min(1180px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 34px 0 46px;
+  border-top: 1px solid rgba(71, 43, 122, 0.12);
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+  color: #5d477d;
+  font-family: Roboto, Arial, sans-serif;
+}
+
+.footer-brand {
+  max-width: 430px;
+
+  strong {
+    color: #472b7a;
+    display: block;
+    font-size: 22px;
+    margin-bottom: 8px;
+  }
+
+  p {
+    line-height: 1.5;
+    margin: 0;
+  }
+}
+
+nav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 12px 16px;
+  max-width: 560px;
+
+  a {
+    color: #472b7a;
+    font-weight: 800;
+    text-decoration: none;
+  }
+}
+
+.compact {
+  padding: 24px 0 28px;
+  font-size: 14px;
+
+  .footer-brand strong {
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 760px) {
+  .hipatec-footer,
+  nav {
+    align-items: flex-start;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+}

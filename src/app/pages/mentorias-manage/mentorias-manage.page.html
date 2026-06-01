@@ -1,0 +1,77 @@
+<app-navbar></app-navbar>
+
+<ion-content [fullscreen]="true">
+<main class="app-page manage-page">
+  <section class="page-hero">
+    <div>
+      <span>Mentora</span>
+      <h1>Gerenciar mentorias</h1>
+      <p>Crie, agende, edite e acompanhe inscrições nas mentorias da comunidade Hipatec.</p>
+    </div>
+    <aside>
+      <strong>{{ mentorias.length }}</strong>
+      <p>Mentorias criadas por você</p>
+    </aside>
+  </section>
+
+  <p class="feedback" *ngIf="feedback">{{ feedback }}</p>
+
+  <section class="form-card">
+    <h2>{{ editingId ? 'Editar mentoria' : 'Criar nova mentoria' }}</h2>
+    <form (ngSubmit)="salvar()">
+      <label>Título<input type="text" [(ngModel)]="form.titulo" name="titulo" /></label>
+      <label>Descrição<textarea rows="4" [(ngModel)]="form.descricao" name="descricao"></textarea></label>
+      <div class="form-grid">
+        <label>Tema/área<input type="text" [(ngModel)]="form.tema" name="tema" placeholder="Frontend, Dados" /></label>
+        <label>Data<input type="date" [(ngModel)]="form.data" name="data" /></label>
+        <label>Horário<input type="time" [(ngModel)]="form.horario" name="horario" /></label>
+        <label>Duração<input type="text" [(ngModel)]="form.duracao" name="duracao" placeholder="1h30" /></label>
+        <label>Número de vagas<input type="number" min="1" [(ngModel)]="form.vagas" name="vagas" /></label>
+        <label>Formato
+          <select [(ngModel)]="form.formato" name="formato">
+            <option>Online</option>
+            <option>Presencial</option>
+            <option>Híbrida</option>
+          </select>
+        </label>
+      </div>
+      <label>Local ou link da reunião<input type="text" [(ngModel)]="form.local" name="local" /></label>
+      <label>Pré-requisitos<input type="text" [(ngModel)]="form.preRequisitos" name="preRequisitos" /></label>
+      <label>Materiais de apoio<input type="text" [(ngModel)]="form.materiais" name="materiais" /></label>
+
+      <div class="actions">
+        <button type="submit">{{ editingId ? 'Salvar edição' : 'Criar mentoria' }}</button>
+        <button type="button" class="ghost" *ngIf="editingId" (click)="cancelarEdicao()">Cancelar edição</button>
+      </div>
+    </form>
+  </section>
+
+  <section class="manage-list">
+    <article class="manage-card" *ngFor="let mentoria of mentorias">
+      <div>
+        <span class="status">{{ mentoria.status || 'agendada' }}</span>
+        <h2>{{ mentoria.titulo }}</h2>
+        <p>{{ mentoria.data }} às {{ mentoria.horario }} • {{ mentoria.formato }}</p>
+        <p>{{ mentoria.vagas - (mentoria.inscritas || 0) }} vagas disponíveis • {{ mentoria.inscritas || 0 }} inscritas</p>
+      </div>
+      <div class="card-actions">
+        <a [routerLink]="['/mentorias', mentoria.id]">Ver detalhes</a>
+        <button type="button" (click)="editar(mentoria)">Editar</button>
+        <button type="button" (click)="atualizarStatus(mentoria, 'encerrada')">Encerrar</button>
+        <button type="button" (click)="atualizarStatus(mentoria, 'cancelada')">Cancelar</button>
+        <button type="button" (click)="verParticipantes(mentoria.id)">Ver participantes</button>
+      </div>
+      <div class="participants" *ngIf="participantesVisiveis === mentoria.id">
+        <span *ngFor="let participante of mentoria.participantes || []">{{ participante }}</span>
+        <span *ngIf="!mentoria.participantes?.length">Nenhuma participante inscrita ainda.</span>
+      </div>
+    </article>
+
+    <article class="empty" *ngIf="!mentorias.length">
+      <h2>Nenhuma mentoria criada ainda.</h2>
+      <p>Use o formulário acima para agendar a primeira mentoria.</p>
+    </article>
+  </section>
+</main>
+<app-footer [compact]="true"></app-footer>
+</ion-content>

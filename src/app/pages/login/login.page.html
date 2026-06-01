@@ -1,43 +1,40 @@
 <div class="gradient-bg">
-  
   <div class="container">
-    <div class="logo-box">
-        <img src="assets/logo_hipatec_roxo.png" alt="Hipatec" class="logo-img" />
-      </div>
+    <a class="logo-box" routerLink="/home" aria-label="Voltar para a landing Hipatec">
+      <img src="assets/logo_hipatec_roxo.png" alt="Hipatec" class="logo-img" />
+    </a>
+
     <main>
-
-      
-
+      <p class="form-eyebrow">Acesse sua rede</p>
       <h2 class="login-title">{{ role === 'estudantes' ? 'Login Estudante' : 'Login Mentora' }}</h2>
 
-      <ion-segment value="estudantes" (ionChange)="switchRole($event)">
+      <ion-segment [value]="role" (ionChange)="switchRole($event)">
         <ion-segment-button value="estudantes">
-          <ion-label>Estudantes</ion-label>
+          <ion-label>Estudante</ion-label>
         </ion-segment-button>
         <ion-segment-button value="mentoras">
-          <ion-label>Mentoras</ion-label>
+          <ion-label>Mentora</ion-label>
         </ion-segment-button>
       </ion-segment>
 
       <div class="input-group">
-        <label>email</label>
+        <label>Email</label>
         <input type="email" [(ngModel)]="email" placeholder="Digite seu email" />
       </div>
 
       <div class="input-group">
-        <label>senha</label>
-        <input type="password" [(ngModel)]="password" placeholder="Digite sua senha" />
+        <label>Senha</label>
+        <input type="password" [(ngModel)]="password" placeholder="Digite sua senha" (keyup.enter)="login()" />
       </div>
 
-      <button class="btn-login" (click)="login()">fazer login</button>
+      <p class="feedback" *ngIf="feedback">{{ feedback }}</p>
+
+      <button class="btn-login" (click)="login()">Fazer login</button>
 
       <div class="login-footer-links">
-        <a class="footer-link">Esqueceu sua senha?</a>
+        <a class="footer-link" routerLink="/home">Voltar para apresentação</a>
         <a class="footer-link" routerLink="/cadastro">Não possui cadastro?</a>
-
       </div>
-
     </main>
-
   </div>
 </div>

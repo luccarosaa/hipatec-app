@@ -1,104 +1,53 @@
-
 <app-navbar></app-navbar>
 
-<ion-content [fullscreen]="true" class="ion-padding">
-  
-  <div *ngIf="userRole === 'aluna'">
-  <h2 class="section-title">Meu aprendizado</h2>
-  <ion-grid>
-    <ion-row>
-      <ion-col size="12" size-md="4" *ngFor="let item of minhasMentorias">
-        <ion-card (click)="abrirDetalhes(item)" class="mentoria-card">
-          <ion-card-content>
-            <ion-grid class="ion-no-padding">
-              <ion-row class="ion-align-items-center">
-                
-                <ion-col size="7">
-                  <div class="card-main-title">{{ item.titulo }}</div>
-                  <p class="card-desc-text">{{ item.descricao }}</p>
-                </ion-col>
-                <ion-col size="5">
-                  <div class="card-image-wireframe"> <!-- Placeholder para imagem -->
-                    <div class="cross-line-1"></div> <!-- Linhas cruzadas para indicar que é um placeholder -->
-                    <div class="cross-line-2"></div> <!-- ISSO VAI SAIR QUANDO TIVER IMAGEM, É SÓ PARA DEIXAR CLARO QUE AQUI VAI TER UMA FOTO DEPOIS -->
-                  </div>
-                </ion-col>
-              </ion-row>
-              <ion-row>
-                <ion-col size="12">
-                  <div class="progress-container">
-                    <span class="progress-text">{{ item.progresso * 100 }}% concluído</span>
-                    <ion-progress-bar [value]="item.progresso"></ion-progress-bar>
-                  </div>
-                </ion-col>
-              </ion-row>
-            </ion-grid>
-          </ion-card-content>
-        </ion-card>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+<ion-content [fullscreen]="true">
+<main class="app-page mentorias-page">
+  <section class="page-hero">
+    <div>
+      <span>Mentorias</span>
+      <h1>Orientação prática para carreira, estudos e permanência.</h1>
+      <p>Escolha uma mentoria, veja detalhes e confirme sua inscrição com feedback visual local.</p>
+    </div>
+    <aside>
+      <strong>{{ mentorias.length }}</strong>
+      <p>Mentorias abertas neste protótipo</p>
+    </aside>
+  </section>
 
-  <h2 class="section-title">Continuar aprendendo</h2>
-  <p class="section-subtitle">Confira outras oportunidades de estudo com inscrições abertas</p>
+  <p class="feedback" *ngIf="feedback">{{ feedback }}</p>
 
-  <div class="horizontal-scroll">
-    <ion-card *ngFor="let m of mentoriasDisponiveis" class="mentoria-card wide-card">
-      <ion-card-content>
-        <ion-grid class="ion-no-padding">
-          <ion-row class="ion-align-items-center">
-            
-            <ion-col size="7">
-              <div class="card-status-text">Inscrições Abertas</div>
-              <div class="card-main-title">{{ m.titulo }}</div>
-              <p class="card-mentor-text">Mentora: {{ m.mentora }}</p>
-              <p class="card-desc-text">{{ m.descricao }}</p>
-              
-              <ion-button class="btn-card-action" fill="solid" (click)="abrirDetalhes(m)">
-                Inscrever-se agora
-              </ion-button>
-            </ion-col>
-            
-            <ion-col size="5">
-              <div class="card-image-wireframe">
-                <div class="cross-line-1"></div>
-                <div class="cross-line-2"></div>
-              </div>
-            </ion-col>
-
-          </ion-row>
-        </ion-grid>
-      </ion-card-content>
-    </ion-card>
+  <div class="mentor-manage-link" *ngIf="userRole === 'mentoras'">
+    <a routerLink="/mentorias/gerenciar">Gerenciar minhas mentorias</a>
   </div>
 
-  </div>
+  <section class="mentorias-grid">
+    <article class="mentoria-card" *ngFor="let mentoria of mentorias">
+      <div class="card-top">
+        <span>{{ mentoria.tema }}</span>
+        <strong>{{ mentoria.vagas }} vagas</strong>
+      </div>
+      <h2>{{ mentoria.titulo }}</h2>
+      <p>{{ mentoria.descricao }}</p>
 
-  
+      <dl>
+        <div><dt>Mentora</dt><dd>{{ mentoria.mentora }}</dd></div>
+        <div><dt>Quando</dt><dd>{{ mentoria.data }} às {{ mentoria.horario }}</dd></div>
+        <div><dt>Formato</dt><dd>{{ mentoria.formato }}</dd></div>
+      </dl>
 
-  <div *ngIf="userRole === 'mentora'">
-    <h2 class="section-title">Minhas mentorias</h2>
-    <p class="section-subtitle">Gerenciar mentorias e criar novas</p>
+      <div class="tags">
+        <span *ngFor="let tag of mentoria.tags">{{ tag }}</span>
+      </div>
 
-    <ion-grid>
-      <ion-row>
-        <ion-col size="12" size-md="4" *ngFor="let item of minhasMentorias">
-          <ion-card class="mentoria-card">
-            <div class="card-image-placeholder"></div>
-            <ion-card-header>
-              <ion-card-title>{{ item.titulo }}</ion-card-title>
-            </ion-card-header>
-            <ion-button fill="outline" class="btn-config" (click)="abrirDetalhes(item)">Configurar</ion-button>
-          </ion-card>
-        </ion-col>
+      <div class="card-actions">
+        <a [routerLink]="['/mentorias', mentoria.id]">Ver detalhes</a>
+        <button type="button" [class.done]="isInscrita(mentoria.id)" (click)="inscrever(mentoria)">
+          {{ isInscrita(mentoria.id) ? 'Inscrita' : 'Inscrever-se' }}
+        </button>
+      </div>
+    </article>
+  </section>
 
-        <ion-col size="12" size-md="4">
-          <ion-card class="add-card">
-            <ion-icon name="add-outline"></ion-icon>
-          </ion-card>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-  </div>
-
+</main>
+  <app-footer [compact]="true"></app-footer>
 </ion-content>

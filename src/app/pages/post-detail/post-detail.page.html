@@ -1,0 +1,74 @@
+<app-navbar></app-navbar>
+
+<ion-content [fullscreen]="true">
+<main class="app-page post-detail-page" *ngIf="post; else notFound">
+  <a class="back-link" routerLink="/feed">Voltar ao feed</a>
+
+  <article class="post-card detail-card">
+    <header>
+      <div class="avatar">{{ post.autora.slice(0, 1) }}</div>
+      <div>
+        <strong>{{ post.autora }}</strong>
+        <span>{{ post.papel }} • {{ post.tempo }}</span>
+      </div>
+      <small>{{ post.categoria }}</small>
+    </header>
+
+    <p>{{ post.texto }}</p>
+
+    <footer>
+      <button type="button" [class.active]="post.liked" (click)="curtir()">
+        <svg viewBox="0 0 24 24"><path d="M19 14c1.5-1.5 3-3.4 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.8 0-3 .5-4.5 2-1.5-1.5-2.7-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.1 1.5 4 3 5.5l7 7Z"/></svg>
+        {{ post.curtidas }} curtidas
+      </button>
+      <button type="button">
+        <svg viewBox="0 0 24 24"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7A8.4 8.4 0 0 1 4 11.5a8.5 8.5 0 0 1 17 0Z"/></svg>
+        {{ post.comentarios }} comentários
+      </button>
+      <button type="button" (click)="compartilhar()">
+        <svg viewBox="0 0 24 24"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
+        compartilhar
+      </button>
+      <button type="button" [class.active]="post.saved" (click)="salvar()">
+        <svg viewBox="0 0 24 24"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16Z"/></svg>
+        salvar
+      </button>
+    </footer>
+  </article>
+
+  <section class="comment-composer">
+    <label for="comentario">Adicionar comentário</label>
+    <textarea id="comentario" [(ngModel)]="novoComentario" rows="4" placeholder="Escreva uma resposta acolhedora e objetiva..."></textarea>
+    <div>
+      <span *ngIf="feedback">{{ feedback }}</span>
+      <button type="button" (click)="publicarComentario()">Comentar</button>
+    </div>
+  </section>
+
+  <section class="comments-section">
+    <h2>Comentários</h2>
+    <article class="comment-card" *ngFor="let comment of comments">
+      <strong>{{ comment.autora }}</strong>
+      <span>{{ comment.data }}</span>
+      <p>{{ comment.texto }}</p>
+    </article>
+
+    <div class="empty-state" *ngIf="!comments.length">
+      <h3>Nenhum comentário ainda.</h3>
+      <p>Seja a primeira pessoa a responder com apoio, sugestão ou referência útil.</p>
+    </div>
+  </section>
+</main>
+
+<ng-template #notFound>
+  <main class="app-page">
+    <section class="empty-state standalone">
+      <h1>Publicação não encontrada.</h1>
+      <p>Volte ao feed para escolher uma publicação disponível.</p>
+      <a routerLink="/feed">Voltar ao feed</a>
+    </section>
+  </main>
+</ng-template>
+
+<app-footer [compact]="true"></app-footer>
+</ion-content>

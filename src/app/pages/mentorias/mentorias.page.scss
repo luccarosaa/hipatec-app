@@ -1,180 +1,171 @@
-ion-content{
-    --background: linear-gradient(135deg, #fff3cd 0%, #ffffff 80%, #9b82c9 100%);
+@use '../../shared/app-page';
+
+.feedback,
+.mentor-note,
+.mentoria-card {
+  background: #ffffff;
+  border: 1px solid rgba(71, 43, 122, 0.12);
+  border-radius: 20px;
+  box-shadow: 0 16px 42px rgba(71, 43, 122, 0.09);
 }
-  
-.section-title {
-  font-family: 'Roboto', sans-serif;
-  font-weight: 700;
+
+.feedback {
   color: #472b7a;
-  margin: 30px 0 15px 15px;
-  font-size: 36px;
+  font-weight: 800;
+  line-height: 1.5;
+  margin: 0 0 18px;
+  padding: 16px 18px;
 }
 
-.section-subtitle {
-  font-family: 'Roboto', sans-serif;
-  color: #7b59b8;
-  margin: -10px 0 20px 15px;
-  font-size: 14px;
+.mentorias-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
 }
-
 
 .mentoria-card {
-  --background: #ffffff;
-  border: 1px solid rgba(71, 43, 122, 0.15);
-  border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(71, 43, 122, 0.06);
-  margin: 10px;
-  cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
-
-  &:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 16px rgba(71, 43, 122, 0.12);
-    border-color: rgba(71, 43, 122, 0.3);
-  }
-
-  ion-card-content {
-    padding: 16px;
-  }
+  padding: 24px;
 }
 
-.card-status-text {
-  font-family: 'Roboto', sans-serif;
-  color: #7b59b8 !important;
-  font-size: 12px;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-bottom: 4px;
-}
-
-.card-main-title {
-  font-family: 'Roboto', sans-serif;
-  color: #472b7a !important;
-  font-size: 18px;
-  font-weight: 700;
-  margin-bottom: 4px;
-}
-
-.card-desc-text {
-  font-family: 'Roboto', sans-serif;
-  color: #472b7a !important;
-  font-size: 13px;
-  margin: 0 0 10px 0;
-  opacity: 0.8;
-}
-
-.progress-container {
-  margin-top: 12px;
-
-  .progress-text {
-    font-family: 'Roboto', sans-serif;
-    font-size: 15px;
-    color: #472b7a;
-    font-weight: 500;
-    display: block;
-    margin-bottom: 6px;
-  }
-
-  ion-progress-bar {
-    height: 10px;
-    border-radius: 3px;
-    --background: #f0ecf7;
-    --progress-background: #472b7a;
-  }
-}
-
-
-.card-image-wireframe { //PLACEHOLDER PARA IMAGEM, SÓ PARA DEIXAR CLARO QUE AQUI VAI TER UMA FOTO DEPOIS
-  width: 100%;
-  height: 160px;
-  border: 1px dashed rgba(71, 43, 122, 0.4);
-  border-radius: 8px;
-  position: relative;
-  background-color: #faf9fc;
-  overflow: hidden;
-
-  .cross-line-1, .cross-line-2 {
-    position: absolute;
-    width: 140%;
-    height: 1px;
-    background-color: rgba(71, 43, 122, 0.15);
-    top: 50%;
-    left: -20%;
-  }
-  .cross-line-1 { transform: rotate(30deg); }
-  .cross-line-2 { transform: rotate(-30deg); }
-}
-
-.btn-card-action {
-  font-family: 'Roboto', sans-serif;
-  font-weight: 500;
-  margin: 8px 0 0 0;
-  
-  --color: #ffffff !important;
-  --background: #472b7a !important;
-  --border-radius: 8px;
-  --ripple-color: #7b59b8 !important;
-  box-shadow: 0 4px 6px rgba(71, 43, 122, 0.15);
-  text-transform: none;
-
-  &:hover {
-    --background: #5d389b !important;
-  }
-}
-
-.btn-card-outline {
-  font-family: 'Roboto', sans-serif;
-  font-weight: 500;
-  margin: 8px 0 0 0;
-  --color: #472b7a !important;
-  --border-color: #472b7a !important;
-  --border-radius: 8px;
-  text-transform: none;
-}
-
-
-.add-card {
-  height: calc(100% - 20px);
-  min-height: 140px;
+.card-top,
+.card-actions,
+dl div {
   display: flex;
   align-items: center;
-  justify-content: center;
-  border: 2px dashed #7b59b8;
-  border-radius: 12px;
-  background: #faf9fc;
-  box-shadow: none;
-  margin: 10px;
-  cursor: pointer;
-  transition: background-color 0.2s;
+  justify-content: space-between;
+  gap: 14px;
+}
 
-  &:hover {
-    background: #f1edf7;
+.card-top span,
+.tags span {
+  background: #fff3cd;
+  border-radius: 999px;
+  color: #472b7a;
+  font-size: 12px;
+  font-weight: 900;
+  padding: 8px 10px;
+}
+
+.card-top strong {
+  color: #7b59b8;
+  font-size: 13px;
+}
+
+h2 {
+  color: #2f1b52;
+  font-size: 24px;
+  line-height: 1.2;
+  margin: 20px 0 10px;
+}
+
+p {
+  color: #5d477d;
+  line-height: 1.65;
+}
+
+dl {
+  display: grid;
+  gap: 10px;
+  margin: 20px 0;
+
+  div {
+    border-top: 1px solid rgba(71, 43, 122, 0.1);
+    padding-top: 10px;
   }
 
-  ion-icon {
-    font-size: 40px;
-    color: #472b7a;
+  dt {
+    color: #7b59b8;
+    font-weight: 800;
+  }
+
+  dd {
+    color: #2f1b52;
+    margin: 0;
+    text-align: right;
   }
 }
 
-.pagination-dots {
+.tags {
   display: flex;
-  justify-content: center;
-  margin: 25px 0;
-  gap: 10px;
-  
-  .dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    border: 1px solid #7b59b8;
-    background: transparent;
-    transition: background-color 0.2s;
-    
-    &.active {
-      background: #472b7a;
-      border-color: #472b7a;
-    }
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 20px;
+
+  span {
+    background: #f7f3ff;
+    font-size: 13px;
+    font-weight: 700;
+  }
+}
+
+.card-actions a,
+.card-actions button {
+  border-radius: 999px;
+  font-weight: 800;
+  min-height: 42px;
+  padding: 0 16px;
+}
+
+.card-actions a {
+  align-items: center;
+  border: 1px solid rgba(71, 43, 122, 0.2);
+  color: #472b7a;
+  display: inline-flex;
+  text-decoration: none;
+}
+
+.card-actions button {
+  background: #472b7a;
+  border: 0;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.card-actions button.done {
+  background: #7b59b8;
+}
+
+.mentor-note {
+  margin-top: 22px;
+  padding: 22px;
+}
+
+@media (max-width: 980px) {
+  .mentorias-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 680px) {
+  .mentorias-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .card-actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .card-actions a,
+  .card-actions button {
+    justify-content: center;
+    width: 100%;
+  }
+}
+
+
+.mentor-manage-link {
+  display: flex;
+  justify-content: flex-end;
+  margin: 0 0 18px;
+
+  a {
+    background: #472b7a;
+    border-radius: 999px;
+    color: #ffffff;
+    font-weight: 800;
+    min-height: 42px;
+    padding: 12px 18px;
+    text-decoration: none;
   }
 }

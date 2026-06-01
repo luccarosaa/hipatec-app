@@ -1,0 +1,86 @@
+@use '../../shared/app-page';
+
+.support-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  margin-bottom: 24px;
+}
+
+.support-card,
+.support-form {
+  background: #ffffff;
+  border: 1px solid rgba(71, 43, 122, 0.12);
+  border-radius: 20px;
+  box-shadow: 0 16px 42px rgba(71, 43, 122, 0.09);
+  padding: 24px;
+}
+
+.support-card h2,
+.support-form h2 {
+  color: #2f1b52;
+  margin: 0 0 12px;
+}
+
+.support-card p,
+.support-form p {
+  color: #5d477d;
+  line-height: 1.65;
+}
+
+button {
+  background: #472b7a;
+  border: 0;
+  border-radius: 999px;
+  color: #ffffff;
+  cursor: pointer;
+  font-weight: 800;
+  min-height: 42px;
+  padding: 0 18px;
+}
+
+.support-form {
+  display: grid;
+  grid-template-columns: 0.85fr 1.15fr;
+  gap: 28px;
+
+  span {
+    color: #7b59b8;
+    font-size: 13px;
+    font-weight: 900;
+    text-transform: uppercase;
+  }
+
+  form,
+  label {
+    display: grid;
+    gap: 10px;
+  }
+
+  form {
+    gap: 16px;
+  }
+
+  label {
+    color: #472b7a;
+    font-weight: 800;
+  }
+
+  input,
+  textarea {
+    border: 1px solid rgba(71, 43, 122, 0.22);
+    border-radius: 14px;
+    color: #2f1b52;
+    font-family: Roboto, Arial, sans-serif;
+    font-size: 15px;
+    outline: none;
+    padding: 12px 14px;
+  }
+}
+
+@media (max-width: 860px) {
+  .support-grid,
+  .support-form {
+    grid-template-columns: 1fr;
+  }
+}

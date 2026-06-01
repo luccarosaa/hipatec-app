@@ -1,0 +1,62 @@
+<app-navbar></app-navbar>
+
+<ion-content [fullscreen]="true">
+<main class="app-page settings-page">
+  <section class="page-hero">
+    <div>
+      <span>Configurações</span>
+      <h1>Preferências da conta</h1>
+      <p>Área simples para organizar conta, notificações, privacidade e acessibilidade no protótipo.</p>
+    </div>
+    <aside>
+      <strong>MVP</strong>
+      <p>Preferências locais e placeholders</p>
+    </aside>
+  </section>
+
+  <section class="account-grid">
+    <article>
+      <h2>Editar e-mail</h2>
+      <p>Seu e-mail atual aparece abaixo. Use um formato válido para salvar a alteração.</p>
+      <label>Email atual
+        <input type="email" [(ngModel)]="email" name="email" />
+      </label>
+      <p class="feedback" *ngIf="emailFeedback">{{ emailFeedback }}</p>
+      <button type="button" (click)="salvarEmail()">Salvar e-mail</button>
+    </article>
+
+    <article>
+      <h2>Alterar senha</h2>
+      <p>A senha deve ter 8 a 18 caracteres, com maiúscula, minúscula, número e caractere especial.</p>
+      <label>Senha atual<input type="password" [(ngModel)]="senhaAtual" name="senhaAtual" /></label>
+      <label>Nova senha<input type="password" [(ngModel)]="novaSenha" name="novaSenha" /></label>
+      <label>Confirmar nova senha<input type="password" [(ngModel)]="confirmarSenha" name="confirmarSenha" /></label>
+      <p class="feedback" *ngIf="senhaFeedback">{{ senhaFeedback }}</p>
+      <button type="button" (click)="alterarSenha()">Alterar senha</button>
+    </article>
+  </section>
+
+  <section class="settings-grid">
+    <article>
+      <h2>Notificações</h2>
+      <label><input type="checkbox" [(ngModel)]="emailNotificacoes" /> Receber avisos por email</label>
+      <label><input type="checkbox" [(ngModel)]="oportunidades" /> Destacar oportunidades e eventos</label>
+    </article>
+
+    <article>
+      <h2>Privacidade</h2>
+      <label><input type="checkbox" [(ngModel)]="perfilPublico" /> Permitir que meu perfil apareça na comunidade</label>
+      <p>Termos e Política de uso: conteúdo placeholder para a próxima etapa do projeto.</p>
+    </article>
+
+    <article>
+      <h2>Acessibilidade</h2>
+      <label><input type="checkbox" [(ngModel)]="altoContraste" /> Preferir contraste reforçado</label>
+      <p>As preferências visuais podem ser conectadas ao tema global em uma iteração futura.</p>
+    </article>
+  </section>
+
+  <button class="logout-danger" type="button" (click)="sair()">Sair da conta</button>
+</main>
+<app-footer [compact]="true"></app-footer>
+</ion-content>

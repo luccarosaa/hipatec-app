@@ -1,106 +1,104 @@
 <app-navbar></app-navbar>
 
-<div class="gradient-bg">
-  <div class="main-layout-wrapper">
-
-    <div class="header-container">
-      <header class="profile-header">
-        
-        <div class="cover-banner">
-          <img src="../../../assets/header_perfil.png">
-        </div>
-
-        <div class="profile-info-container">
-          <div class="avatar-box">
-            <img src="assets/avatar-placeholder.png" alt="Ana Clara" class="profile-avatar" />
-          </div>
-          
-          <div class="profile-details">
-            <div class="user-meta">
-              <h2 class="user-name">Ana Clara</h2>
-              <p class="user-username">@anaclara</p>
-              <p class="user-role">Aluna - IFSP Pirituba</p>
-            </div>
-
-            <div class="profile-stats">
-              <div class="stats-item">
-                <strong class="num-posts">50</strong> 
-                <span>posts</span>
-              </div>
-              <div class="stats-item">
-                <strong class="num-seguidores">29</strong>
-                <span>seguidores</span>
-              </div>
-              <div class="stats-item">
-                <strong class="num-seguindo">34</strong> 
-                <span>seguindo</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="profile-bio-row">
-          <p class="user-bio">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent quis ex in massa congue facilisis vel ac nulla.
-          </p>
-          <button class="btn-edit-profile">editar perfil</button>
-        </div>
-
-      </header>
+<ion-content [fullscreen]="true">
+<main class="app-page profile-page">
+  <section class="profile-header-card">
+    <div class="cover">
+      <img src="assets/header_perfil.png" alt="" />
     </div>
 
-    <div class="feed-container">
-      
-      <div class="post-card">
-        <div class="post-header">
-          <div class="post-avatar-placeholder"></div>
-          <div class="post-meta">
-            <span class="post-author">Ana Clara</span>
-            <span class="post-role">Aluna</span>
-          </div>
-          <span class="post-time">2h</span>
-          <button class="btn-options">&#8226;&#8226;&#8226;</button>
-        </div>
-
-        <div class="post-body">
-          <p class="post-text">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent quis ex in massa congue facilisis vel ac nulla. Fusce ante purus, porttitor id sollicitudin id, sollicitudin vel metus. Donec eget aliquam metus. Pellentesque tempor nisi ac est ornare lobortis.
-          </p>
-        </div>
-
-        <div class="post-actions">
-          <span class="action-dot"></span>
-          <span class="action-dot"></span>
-          <span class="action-dot"></span>
-        </div>
+    <div class="profile-main">
+      <div class="avatar" *ngIf="!user.foto">{{ initials }}</div>
+      <img class="avatar avatar-img" *ngIf="user.foto" [src]="user.foto" alt="Foto de perfil" />
+      <div class="identity">
+        <span>{{ roleLabel }} • IFSP</span>
+        <h1>{{ user.nome || 'Usuária Hipatec' }}</h1>
+        <p>@{{ user.username || 'hipatec' }} • {{ user.email }}</p>
       </div>
-
-      <div class="post-card">
-        <div class="post-header">
-          <div class="post-avatar-placeholder"></div>
-          <div class="post-meta">
-            <span class="post-author">Ana Clara</span>
-            <span class="post-role">Aluna</span>
-          </div>
-          <span class="post-time">3d</span>
-          <button class="btn-options">&#8226;&#8226;&#8226;</button>
-        </div>
-
-        <div class="post-body">
-          <p class="post-text">Fusce posuere erat non elit elementum mollis egestas vel est?</p>
-          
-          <div class="post-image-box">
-            </div>
-        </div>
-
-        <div class="post-actions">
-          <span class="action-dot"></span>
-          <span class="action-dot"></span>
-          <span class="action-dot"></span>
-        </div>
-      </div>
-
+      <a class="edit-button" routerLink="/perfil/editar">Editar perfil</a>
     </div>
 
-  </div>
-</div>
+    <p class="bio">{{ user.bio }}</p>
+
+    <div class="profile-stats">
+      <div><strong>12</strong><span>publicações</span></div>
+      <div><strong>{{ agenda.length }}</strong><span>compromissos</span></div>
+      <div><strong>18</strong><span>conexões</span></div>
+    </div>
+  </section>
+
+  <section class="profile-grid">
+    <article class="info-card">
+      <h2>Dados acadêmicos</h2>
+      <dl>
+        <div><dt>Curso</dt><dd>{{ user.curso || 'Tecnologia' }}</dd></div>
+        <div><dt>Semestre</dt><dd>{{ user.semestre || 'Em atualização' }}</dd></div>
+        <div><dt>Perfil</dt><dd>{{ roleLabel }}</dd></div>
+      </dl>
+    </article>
+
+    <article class="info-card">
+      <h2>Habilidades</h2>
+      <div class="chips">
+        <span *ngFor="let item of habilidades">{{ item }}</span>
+      </div>
+    </article>
+
+    <article class="info-card">
+      <h2>Áreas de interesse</h2>
+      <div class="chips">
+        <span *ngFor="let item of interesses">{{ item }}</span>
+      </div>
+    </article>
+  </section>
+
+  <p class="profile-feedback" *ngIf="feedback">{{ feedback }}</p>
+
+  <section class="agenda-card">
+    <div>
+      <span>Agenda</span>
+      <h2>Próximos compromissos</h2>
+    </div>
+    <div class="agenda-list" *ngIf="agenda.length; else agendaVazia">
+      <article *ngFor="let item of agenda">
+        <div class="date-box">
+          <strong>{{ item.data.slice(0, 5) }}</strong>
+          <span>{{ item.horario }}</span>
+        </div>
+        <div>
+          <a class="agenda-title" *ngIf="item.isMentoria" [routerLink]="['/mentorias', item.id]">{{ item.titulo }}</a>
+          <h3 *ngIf="!item.isMentoria">{{ item.titulo }}</h3>
+          <p>{{ item.tipo }}</p>
+        </div>
+        <div class="agenda-actions">
+          <small [class.pending]="item.status === 'Pendente'" [class.closed]="item.status === 'Encerrado'" [class.cancelled]="item.status === 'Cancelada'">{{ item.status }}</small>
+          <button type="button" *ngIf="user.role !== 'mentoras' && item.isMentoria" (click)="cancelarInscricao(item)">Cancelar inscrição</button>
+          <a *ngIf="user.role === 'mentoras' && item.isMentoria" routerLink="/mentorias/gerenciar">Gerenciar</a>
+        </div>
+      </article>
+    </div>
+    <ng-template #agendaVazia>
+      <p class="empty-agenda">Você ainda não possui compromissos salvos.</p>
+    </ng-template>
+  </section>
+
+  <section class="activity-grid">
+    <article class="activity-card">
+      <h2>Publicações recentes</h2>
+      <div class="mini-post" *ngFor="let post of posts">
+        <strong>{{ post.autora }}</strong>
+        <p>{{ post.texto }}</p>
+      </div>
+    </article>
+
+    <article class="activity-card">
+      <h2>Mentorias em destaque</h2>
+      <div class="mini-post" *ngFor="let mentoria of mentorias">
+        <strong>{{ mentoria.titulo }}</strong>
+        <p>{{ mentoria.mentora }} • {{ mentoria.data }}</p>
+      </div>
+    </article>
+  </section>
+</main>
+  <app-footer [compact]="true"></app-footer>
+</ion-content>

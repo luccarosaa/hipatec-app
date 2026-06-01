@@ -1,0 +1,47 @@
+<app-navbar></app-navbar>
+
+<ion-content [fullscreen]="true">
+<main class="app-page apoio-page">
+  <section class="page-hero">
+    <div>
+      <span>Canal de apoio</span>
+      <h1>Acolhimento, orientação e caminhos para pedir ajuda.</h1>
+      <p>Um espaço para reunir materiais de permanência e simular contato com a rede de apoio da Hipatec.</p>
+    </div>
+    <aside>
+      <strong>3</strong>
+      <p>Frentes de apoio inicial no MVP</p>
+    </aside>
+  </section>
+
+  <section class="support-grid">
+    <article class="support-card" *ngFor="let item of materiais">
+      <h2>{{ item.titulo }}</h2>
+      <p>{{ item.descricao }}</p>
+      <button type="button">Acessar material</button>
+    </article>
+  </section>
+
+  <section class="support-form">
+    <div>
+      <span>Formulário simples</span>
+      <h2>Precisa conversar ou pedir orientação?</h2>
+      <p>Descreva o que está acontecendo. No protótipo, o envio gera feedback visual local.</p>
+    </div>
+
+    <form (ngSubmit)="enviar()">
+      <label>
+        Assunto
+        <input type="text" [(ngModel)]="assunto" name="assunto" placeholder="Ex: dúvida sobre permanência" />
+      </label>
+      <label>
+        Mensagem
+        <textarea [(ngModel)]="mensagem" name="mensagem" rows="5" placeholder="Conte brevemente como a rede pode ajudar"></textarea>
+      </label>
+      <p *ngIf="feedback">{{ feedback }}</p>
+      <button type="submit">Enviar pedido</button>
+    </form>
+  </section>
+</main>
+  <app-footer [compact]="true"></app-footer>
+</ion-content>

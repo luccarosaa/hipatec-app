@@ -1,18 +1,168 @@
-<ion-header [translucent]="true">
-  <app-navbar></app-navbar>
-</ion-header>
+<ion-content [fullscreen]="true" class="landing-content">
+  <main class="landing-shell">
+    <header class="public-header">
+      <a class="brand" routerLink="/home" aria-label="Hipatec">
+        <img src="assets/logo_roxo.png" alt="Hipatec" />
+      </a>
 
+      <nav class="public-nav" aria-label="Navegação pública">
+        <a href="#sobre" (click)="scrollToSection('sobre', $event)">Sobre</a>
+        <a href="#mentorias" (click)="scrollToSection('mentorias', $event)">Mentorias</a>
+        <a href="#comunidade" (click)="scrollToSection('comunidade', $event)">Comunidade</a>
+        <a href="#oportunidades" (click)="scrollToSection('oportunidades', $event)">Oportunidades</a>
+      </nav>
 
+      <div class="header-actions">
+        <a class="btn btn-ghost" routerLink="/login">Entrar</a>
+        <a class="btn btn-primary" routerLink="/cadastro">Criar conta</a>
+      </div>
+    </header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
+    <section class="hero-section">
+      <div class="hero-copy">
+        <span class="eyebrow">Rede de apoio para mulheres do IFSP</span>
+        <h1>Conectando mulheres para permanecerem e crescerem na tecnologia</h1>
+      </div>
 
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
+      <div class="hero-bottom">
+        <div class="hero-intro">
+          <p>
+            A Hipatec conecta estudantes, mentoras, oportunidades e acolhimento para que mais mulheres avancem na tecnologia com apoio real.
+          </p>
+          <div class="hero-actions">
+            <a class="btn btn-primary btn-large" routerLink="/cadastro">Criar conta grátis</a>
+            <a class="btn btn-secondary btn-large" href="#mentorias" (click)="scrollToSection('mentorias', $event)">Conhecer mentorias</a>
+          </div>
+        </div>
+
+        <div class="hero-visual" aria-label="Prévia da plataforma Hipatec">
+        <article class="preview-card profile-preview">
+          <div class="avatar">AC</div>
+          <div>
+            <strong>Ana Clara</strong>
+            <span>ADS, 3o semestre</span>
+          </div>
+          <p>Buscando mentoria em frontend e primeira vaga de estágio.</p>
+        </article>
+
+        <article class="preview-card feed-preview">
+          <span class="tag">Feed colaborativo</span>
+          <p>"Alguém topa revisar currículo antes da feira de estágios?"</p>
+          <div class="mini-actions"><span>24 curtidas</span><span>8 comentários</span></div>
+        </article>
+
+        <article class="preview-card mentoring-preview">
+          <span class="tag">Mentoria aberta</span>
+          <h3>Preparação para entrevista técnica</h3>
+          <p>Camila Nogueira • 25/06 • 5 vagas</p>
+          <button type="button" class="sample-link" (click)="openAccessInvite($event)">Ver detalhes</button>
+        </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="sobre" class="section two-column">
+      <div>
+        <span class="section-kicker">Por que existe</span>
+        <h2>Representatividade começa no acesso, mas se sustenta com permanência.</h2>
+      </div>
+      <p>
+        A Hipatec nasce para fortalecer mulheres do IFSP em tecnologia com uma rede de acolhimento, trocas e referências. O foco do MVP é criar pontes entre alunas, mentoras e oportunidades sem depender de cursos completos nesta fase.
+      </p>
+    </section>
+
+    <section class="section pillars-grid" aria-label="Pilares da Hipatec">
+      <article class="pillar-card">
+        <span>01</span>
+        <h3>Mentorias</h3>
+        <p>Conexão com ex-alunas e profissionais para orientar carreira, estudos, portfólio e processos seletivos.</p>
+      </article>
+      <article class="pillar-card">
+        <span>02</span>
+        <h3>Rede colaborativa</h3>
+        <p>Feed com publicações, dúvidas, conquistas, comentários e apoio entre estudantes.</p>
+      </article>
+      <article class="pillar-card">
+        <span>03</span>
+        <h3>Oportunidades</h3>
+        <p>Vagas afirmativas, eventos, oficinas e conteúdos úteis para desenvolvimento acadêmico e profissional.</p>
+      </article>
+    </section>
+
+    <section id="mentorias" class="section">
+      <div class="section-heading">
+        <span class="section-kicker">Mentorias do MVP</span>
+        <h2>Encontros objetivos para avançar com acompanhamento.</h2>
+        <button type="button" class="section-action" (click)="openAccessInvite($event)">Ver todas</button>
+      </div>
+      <div class="cards-grid">
+        <article class="feature-card" *ngFor="let mentoria of mentoriasDestaque">
+          <span class="tag">{{ mentoria.tema }}</span>
+          <h3>{{ mentoria.titulo }}</h3>
+          <p>{{ mentoria.descricao }}</p>
+          <dl>
+            <div><dt>Mentora</dt><dd>{{ mentoria.mentora }}</dd></div>
+            <div><dt>Data</dt><dd>{{ mentoria.data }} às {{ mentoria.horario }}</dd></div>
+            <div><dt>Vagas</dt><dd>{{ mentoria.vagas }}</dd></div>
+          </dl>
+          <button type="button" class="card-link" (click)="openAccessInvite($event)">Ver detalhes</button>
+        </article>
+      </div>
+    </section>
+
+    <section id="comunidade" class="section community-section">
+      <div class="community-copy">
+        <span class="section-kicker">Comunidade</span>
+        <h2>Um feed para dúvidas, conquistas e pedidos de apoio.</h2>
+        <p>Publique aprendizados, peça revisão, encontre colegas para estudar e acompanhe conversas importantes para a permanência no curso.</p>
+      </div>
+      <div class="social-mock">
+        <div class="compose-bar">Compartilhe uma dúvida ou conquista...</div>
+        <article>
+          <strong>Júlia Mendes</strong>
+          <p>Alguém estudando banco de dados para a prova? Podemos montar uma sessão de exercícios.</p>
+          <span>19 curtidas • 9 comentários</span>
+        </article>
+      </div>
+    </section>
+
+    <section id="oportunidades" class="section">
+      <div class="section-heading">
+        <span class="section-kicker">Oportunidades</span>
+        <h2>Vagas, eventos e oficinas para dar o próximo passo.</h2>
+        <button type="button" class="section-action" (click)="openAccessInvite($event)">Explorar</button>
+      </div>
+      <div class="opportunity-strip">
+        <article *ngFor="let item of oportunidadesDestaque">
+          <span>{{ item.tipo }}</span>
+          <h3>{{ item.titulo }}</h3>
+          <p>{{ item.organizacao }} • {{ item.prazo }}</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="final-cta">
+      <span class="section-kicker">Faça parte</span>
+      <h2>Entre na rede que acolhe, orienta e abre caminhos.</h2>
+      <div class="hero-actions">
+        <a class="btn btn-primary btn-large" routerLink="/cadastro">Criar conta</a>
+        <a class="btn btn-secondary btn-large" routerLink="/cadastro">Entrar como mentora</a>
+      </div>
+    </section>
+
+    <app-footer></app-footer>
+  </main>
+
+  <div class="access-overlay" *ngIf="showAccessInvite" (click)="closeAccessInvite()">
+    <section class="access-modal" role="dialog" aria-modal="true" aria-labelledby="access-title" (click)="$event.stopPropagation()">
+      <span class="section-kicker">Comunidade Hipatec</span>
+      <h2 id="access-title">Crie sua conta para acessar a comunidade Hipatec</h2>
+      <p>Entre na plataforma para publicar, comentar, participar de mentorias e acompanhar oportunidades feitas para mulheres na tecnologia.</p>
+      <div class="modal-actions">
+        <a class="btn btn-primary" routerLink="/cadastro">Criar conta</a>
+        <a class="btn btn-secondary" routerLink="/login">Entrar</a>
+        <button type="button" class="btn btn-ghost" (click)="closeAccessInvite()">Continuar explorando</button>
+      </div>
+    </section>
   </div>
 </ion-content>

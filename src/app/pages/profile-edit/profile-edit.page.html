@@ -1,0 +1,69 @@
+<app-navbar></app-navbar>
+
+<ion-content [fullscreen]="true">
+<main class="app-page edit-profile-page">
+  <a class="back-link" routerLink="/perfil">Voltar ao perfil</a>
+
+  <section class="edit-card">
+    <div class="section-heading">
+      <span>Editar perfil</span>
+      <h1>Atualize como você aparece na comunidade</h1>
+      <p>As alterações são salvas localmente neste protótipo.</p>
+    </div>
+
+    <form (ngSubmit)="salvar()">
+      <label>
+        Foto de perfil mockada
+        <input type="url" [(ngModel)]="user.foto" name="foto" placeholder="https://exemplo.com/foto.jpg" />
+      </label>
+      <label>
+        Nome
+        <input type="text" [(ngModel)]="user.nome" name="nome" />
+      </label>
+      <label>
+        Nome de usuário
+        <input type="text" [(ngModel)]="user.username" name="username" placeholder="Ex: anaclara" />
+      </label>
+      <label>
+        Email cadastrado
+        <input type="email" [value]="user.email" readonly />
+        <small>Para alterar o e-mail, acesse Configurações.</small>
+      </label>
+      <label>
+        Biografia
+        <textarea [(ngModel)]="user.bio" name="bio" rows="4"></textarea>
+      </label>
+      <div class="form-grid">
+        <label>
+          Curso
+          <input type="text" [(ngModel)]="user.curso" name="curso" />
+        </label>
+        <label>
+          Semestre
+          <input type="text" [(ngModel)]="user.semestre" name="semestre" />
+        </label>
+      </div>
+      <label>
+        Áreas de interesse
+        <input type="text" [(ngModel)]="interesses" name="interesses" placeholder="Frontend, Dados, Carreira" />
+      </label>
+      <label>
+        Habilidades técnicas
+        <input type="text" [(ngModel)]="habilidades" name="habilidades" placeholder="HTML, CSS, SQL" />
+      </label>
+      <label>
+        Links
+        <input type="text" [(ngModel)]="user.links" name="links" placeholder="GitHub, LinkedIn ou portfólio" />
+      </label>
+
+      <p class="feedback" *ngIf="feedback">{{ feedback }}</p>
+
+      <div class="actions">
+        <button type="submit">Salvar alterações</button>
+        <a routerLink="/perfil">Cancelar</a>
+      </div>
+    </form>
+  </section>
+</main>
+<app-footer [compact]="true"></app-footer>
+</ion-content>

@@ -1,58 +1,69 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-// import { HttpClientModule } from '@angular/common/http';
-import { Router, RouterLink } from '@angular/router'; // aqui faltou importar o RouterLink
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { IonLabel, IonSegment, IonSegmentButton } from '@ionic/angular/standalone';
-import { environment } from '../../../environments/environment';
 import { AuthService } from '../../services/auth.service';
+import { UserRole } from '../../data/mvp-data';
 
-
-@Component({  
+@Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
   standalone: true,
-  imports: [IonLabel, IonSegment, IonSegmentButton, CommonModule, FormsModule, RouterLink] // adicionei o RouterLink aqui
+  imports: [IonLabel, IonSegment, IonSegmentButton, CommonModule, FormsModule, RouterLink]
 })
 export class LoginPage implements OnInit {
-
-  role: 'estudantes' | 'mentoras' = 'estudantes';
+  private auth = inject(AuthService);
+  private router = inject(Router);
+  private route = inject(ActivatedRoute);
+  role: UserRole = 'estudantes';
   email = '';
   password = '';
-
-  constructor(private auth: AuthService, private router: Router) { } // isso aqui precisa estar em todas? acredito que sim
+  feedback = '';
 
   ngOnInit() {
+    if (this.auth.isAuthenticated()) {
+      this.router.navigate([this.route.snapshot.queryParamMap.get('redirect') || '/feed']);
+    }
   }
 
   switchRole(ev: any) {
     this.role = ev.detail?.value || 'estudantes';
-    this.email = '';
-    this.password = '';
+    this.feedback = '';
   }
 
   login() {
     if (!this.email || !this.password) {
-      alert('Informe email e senha para continuar.');
+      this.feedback = 'Informe email e senha para continuar.';
       return;
     }
 
     this.auth.login(this.role, this.email, this.password)
       .subscribe({
         next: response => {
-          console.log('API login response:', response);
-          if (response.token) {
-            this.auth.saveToken(response.token);
+          if (!response.authenticated) {
+            this.feedback = response.message || 'Email ou senha inválidos.';
+            return;
           }
-          alert(response.message || `Login successful for ${this.role}`);
-          // this.router.navigate(['/mentorias']);
+
+          this.auth.saveToken(String(response.userId));
+          this.auth.saveCurrentUser({
+            id: response.userId,
+            nome: response.nome || this.email.split('@')[0],
+            username: response.username,
+            email: response.email || this.email,
+            role: response.role || this.role,
+            foto: response.foto,
+            curso: response.curso,
+            semestre: response.semestre,
+            bio: response.bio,
+          });
+          this.router.navigate([this.route.snapshot.queryParamMap.get('redirect') || '/feed']);
         },
-        error: err => {
-          console.error('API login error:', err);
-          alert('Login failed. Verifique seus dados e tente novamente.');
+        error: () => {
+          this.feedback = 'Não foi possível entrar agora. Tente novamente.';
         }
       });
   }
-
 }
