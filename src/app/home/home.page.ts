@@ -1,8 +1,7 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterLink } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { IonContent } from '@ionic/angular/standalone';
-import { AuthService } from '../services/auth.service';
 import { FooterComponent } from '../components/footer/footer.component';
 import { mentorias, oportunidades } from '../data/mvp-data';
 
@@ -13,21 +12,23 @@ import { mentorias, oportunidades } from '../data/mvp-data';
   standalone: true,
   imports: [CommonModule, RouterLink, IonContent, FooterComponent],
 })
-export class HomePage implements OnInit {
-  private auth = inject(AuthService);
-  private router = inject(Router);
+export class HomePage {
   mentoriasDestaque = mentorias.slice(0, 3);
   oportunidadesDestaque = oportunidades.slice(0, 3);
   showAccessInvite = false;
+  menuOpen = false;
 
-  ngOnInit() {
-    if (this.auth.isAuthenticated()) {
-      this.router.navigate(['/feed']);
-    }
+  toggleMenu() {
+    this.menuOpen = !this.menuOpen;
+  }
+
+  closeMenu() {
+    this.menuOpen = false;
   }
 
   scrollToSection(sectionId: string, event?: Event) {
     event?.preventDefault();
+    this.closeMenu();
     document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 

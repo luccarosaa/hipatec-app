@@ -6,12 +6,24 @@
       </a>
     </ion-buttons>
 
+    <form class="search-box" role="search" (submit)="$event.preventDefault(); submitSearch()">
+      <span aria-hidden="true">⌕</span>
+      <input
+        type="search"
+        name="search"
+        [(ngModel)]="searchTerm"
+        placeholder="Buscar..."
+        aria-label="Buscar nesta página" />
+    </form>
+
     <nav class="nav-links" aria-label="Navegação principal">
       <a routerLink="/feed" routerLinkActive="active">Feed</a>
-      <a routerLink="/mentorias" routerLinkActive="active">Mentorias</a>
-      <a routerLink="/oportunidades" routerLinkActive="active">Oportunidades</a>
-      <a routerLink="/apoio" routerLinkActive="active">Apoio</a>
-      <a routerLink="/perfil" routerLinkActive="active">Perfil</a>
+
+      <button type="button" class="learning-trigger" (click)="toggleLearningMenu($event)" [attr.aria-expanded]="learningMenuOpen" aria-controls="learning-menu">
+        Aprendizado
+      </button>
+
+      <a routerLink="/vagas" routerLinkActive="active">Vagas</a>
     </nav>
 
     <ion-buttons slot="end" class="desktop-actions">
@@ -22,30 +34,35 @@
     </ion-buttons>
 
     <ion-buttons slot="end" class="mobile-actions">
-      <button
-        class="menu-toggle"
-        type="button"
-        (click)="toggleMenu()"
-        [attr.aria-expanded]="menuOpen"
-        aria-controls="mobile-menu"
-        aria-label="Abrir menu de navegação">
-        <span></span>
-        <span></span>
-        <span></span>
+      <button class="menu-toggle" type="button" (click)="toggleMenu()" [attr.aria-expanded]="menuOpen" aria-controls="mobile-menu" aria-label="Abrir menu de navegação">
+        <span></span><span></span><span></span>
       </button>
     </ion-buttons>
   </ion-toolbar>
 
+  <div class="menu-backdrop" *ngIf="userMenuOpen || learningMenuOpen" (click)="closeMenu()"></div>
 
-  <div class="user-menu-backdrop" *ngIf="userMenuOpen" (click)="closeMenu()"></div>
+  <section class="learning-dropdown" id="learning-menu" *ngIf="learningMenuOpen">
+    <a *ngFor="let item of learningItems" [routerLink]="item.route" (click)="closeMenu()">{{ item.label }}</a>
+  </section>
+
   <section class="user-dropdown" id="user-menu" *ngIf="userMenuOpen">
     <a routerLink="/perfil" (click)="closeMenu()">Ver perfil</a>
     <a routerLink="/perfil/editar" (click)="closeMenu()">Editar perfil</a>
+    <a routerLink="/apoio" (click)="closeMenu()">Apoio</a>
+    <a *ngIf="isAdmin" routerLink="/admin" (click)="closeMenu()">Administração</a>
     <a routerLink="/configuracoes" (click)="closeMenu()">Configurações</a>
-    <button type="button" (click)="logout()">Sair</button>
+    <button class="icon-pill" type="button" (click)="logout()">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>
+      Sair
+    </button>
   </section>
+
   <div class="mobile-menu" id="mobile-menu" [class.open]="menuOpen">
     <div class="mobile-menu-card">
+      <button class="mobile-menu-close" type="button" (click)="closeMenu()" aria-label="Fechar menu">
+        <span aria-hidden="true">×</span>
+      </button>
       <div class="mobile-user">
         <div class="avatar-button"><img *ngIf="foto" [src]="foto" alt="" /><span *ngIf="!foto">{{ nome.slice(0, 1) }}</span></div>
         <div>
@@ -56,13 +73,18 @@
 
       <nav aria-label="Menu mobile">
         <a routerLink="/feed" (click)="closeMenu()">Feed</a>
-        <a routerLink="/mentorias" (click)="closeMenu()">Mentorias</a>
-        <a routerLink="/oportunidades" (click)="closeMenu()">Oportunidades</a>
+        <a *ngFor="let item of learningItems" [routerLink]="item.route" (click)="closeMenu()">{{ item.label }}</a>
+        <a routerLink="/vagas" (click)="closeMenu()">Vagas</a>
         <a routerLink="/apoio" (click)="closeMenu()">Apoio</a>
-        <a routerLink="/perfil" (click)="closeMenu()">Perfil</a>
+        <a routerLink="/perfil" (click)="closeMenu()">Ver perfil</a>
+        <a *ngIf="isAdmin" routerLink="/admin" (click)="closeMenu()">Administração</a>
+    <a routerLink="/configuracoes" (click)="closeMenu()">Configurações</a>
       </nav>
 
-      <button class="mobile-logout" type="button" (click)="logout()">Sair da conta</button>
+      <button class="mobile-logout icon-pill" type="button" (click)="logout()">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>
+        Sair da conta
+      </button>
     </div>
   </div>
 </ion-header>

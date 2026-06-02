@@ -1,4 +1,4 @@
-export type UserRole = 'estudantes' | 'mentoras';
+export type UserRole = 'estudantes' | 'mentoras' | 'administradoras';
 
 export interface Mentoria {
   id: number;
@@ -31,6 +31,7 @@ export interface FeedPost {
   curtidas: number;
   comentarios: number;
   categoria: string;
+  imagem?: string;
   liked?: boolean;
   saved?: boolean;
 }
@@ -44,6 +45,13 @@ export interface Oportunidade {
   prazo: string;
   descricao: string;
   tags: string[];
+  tipoVaga?: string;
+  formato?: string;
+  estado?: string;
+  cidade?: string;
+  area?: string;
+  publicadaHa?: string;
+  linkExterno?: string;
 }
 
 export const mentorias: Mentoria[] = [
@@ -142,10 +150,85 @@ export const oportunidades: Oportunidade[] = [
     titulo: 'Programa de estágio afirmativo em tecnologia',
     organizacao: 'Núcleo de Empregabilidade IFSP',
     tipo: 'vaga',
-    local: 'Remoto',
+    tipoVaga: 'Estágio',
+    formato: 'Remoto',
+    local: 'Brasil',
+    estado: 'SP',
+    cidade: 'São Paulo',
+    area: 'Desenvolvimento',
+    publicadaHa: '12h',
+    linkExterno: 'https://www.ifsp.edu.br/',
     prazo: 'Inscrições até 20/06',
     descricao: 'Seleção voltada para estudantes mulheres em cursos de tecnologia, com trilha de desenvolvimento e mentoria.',
     tags: ['Estágio', 'Afirmativa', 'Remoto'],
+  },
+  {
+    id: 5,
+    titulo: 'Desenvolvedora frontend júnior',
+    organizacao: 'Lumen Tech',
+    tipo: 'vaga',
+    tipoVaga: 'Efetivo',
+    formato: 'Semi-presencial',
+    local: 'São Paulo',
+    estado: 'SP',
+    cidade: 'São Paulo',
+    area: 'Frontend',
+    publicadaHa: '1d',
+    linkExterno: 'https://www.linkedin.com/jobs/',
+    prazo: 'Inscrições até 28/06',
+    descricao: 'Vaga para atuar com interfaces web, componentes reutilizáveis e colaboração com times de produto e design.',
+    tags: ['Frontend', 'Angular', 'Júnior'],
+  },
+  {
+    id: 6,
+    titulo: 'Analista de dados trainee',
+    organizacao: 'Dados para Todas',
+    tipo: 'vaga',
+    tipoVaga: 'Trainee',
+    formato: 'Remoto',
+    local: 'Brasil',
+    estado: 'RJ',
+    cidade: 'Rio de Janeiro',
+    area: 'Dados',
+    publicadaHa: '2d',
+    linkExterno: 'https://www.linkedin.com/jobs/',
+    prazo: 'Inscrições até 02/07',
+    descricao: 'Programa de entrada para estudantes interessadas em SQL, visualização de dados e indicadores de negócio.',
+    tags: ['Dados', 'SQL', 'Trainee'],
+  },
+  {
+    id: 7,
+    titulo: 'Suporte técnico temporário',
+    organizacao: 'Instituto Conecta',
+    tipo: 'vaga',
+    tipoVaga: 'Temporário',
+    formato: 'Presencial',
+    local: 'Campus parceiro',
+    estado: 'SP',
+    cidade: 'Guarulhos',
+    area: 'Suporte',
+    publicadaHa: '3d',
+    linkExterno: 'https://www.ifsp.edu.br/',
+    prazo: 'Inscrições até 18/06',
+    descricao: 'Atuação em atendimento, configuração de equipamentos e apoio a estudantes em laboratório de informática.',
+    tags: ['Suporte', 'Presencial', 'Temporário'],
+  },
+  {
+    id: 8,
+    titulo: 'Bolsista em pesquisa aplicada',
+    organizacao: 'Laboratório de Inovação IFSP',
+    tipo: 'vaga',
+    tipoVaga: 'Bolsa',
+    formato: 'Semi-presencial',
+    local: 'São Paulo',
+    estado: 'SP',
+    cidade: 'São Paulo',
+    area: 'Pesquisa',
+    publicadaHa: '5d',
+    linkExterno: 'https://www.ifsp.edu.br/',
+    prazo: 'Inscrições até 30/06',
+    descricao: 'Bolsa para apoio em projeto acadêmico com documentação, prototipação e testes de aplicações web.',
+    tags: ['Pesquisa', 'Bolsa', 'Web'],
   },
   {
     id: 2,

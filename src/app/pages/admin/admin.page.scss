@@ -1,0 +1,164 @@
+@use '../../shared/app-page';
+
+.admin-feedback,
+.admin-card {
+  background: #ffffff;
+  border: 1px solid rgba(71, 43, 122, 0.12);
+  border-radius: 20px;
+  box-shadow: 0 14px 34px rgba(71, 43, 122, 0.08);
+}
+
+.admin-feedback {
+  color: #472b7a;
+  font-weight: 900;
+  margin: 0 0 18px;
+  padding: 14px 16px;
+}
+
+.admin-grid {
+  align-items: start;
+  display: grid;
+  gap: 20px;
+  grid-template-columns: minmax(0, 1.3fr) minmax(320px, 0.7fr);
+  margin-bottom: 20px;
+}
+
+.secondary-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.admin-card {
+  padding: 24px;
+}
+
+.admin-form {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.admin-form label {
+  color: #472b7a;
+  display: grid;
+  font-size: 14px;
+  font-weight: 900;
+  gap: 7px;
+}
+
+.admin-form input,
+.admin-form select,
+.admin-form textarea {
+  background: #ffffff;
+  border: 1px solid rgba(71, 43, 122, 0.2);
+  border-radius: 13px;
+  color: #2f1b52;
+  font-family: Roboto, Arial, sans-serif;
+  font-size: 14px;
+  min-height: 42px;
+  outline: 0;
+  padding: 10px 12px;
+}
+
+.admin-form textarea {
+  resize: vertical;
+}
+
+.full-field,
+.admin-form button,
+.settings-admin-card {
+  grid-column: 1 / -1;
+}
+
+.admin-form button,
+.admin-list button,
+.inline-actions button,
+.moderation-list button {
+  background: #472b7a;
+  border: 0;
+  border-radius: 999px;
+  color: #ffffff;
+  cursor: pointer;
+  font-weight: 900;
+  min-height: 40px;
+  padding: 0 14px;
+}
+
+.admin-list,
+.moderation-list {
+  display: grid;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.admin-list article,
+.moderation-list article {
+  align-items: center;
+  background: #fbf9ff;
+  border-radius: 16px;
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+  padding: 14px;
+}
+
+.admin-list strong,
+.moderation-list strong {
+  color: #2f1b52;
+  display: block;
+}
+
+.admin-list span,
+.empty-copy,
+.moderation-list p {
+  color: #5d477d;
+  line-height: 1.5;
+  margin: 4px 0 0;
+}
+
+.inline-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.admin-form button.light,
+.admin-list button.light,
+.inline-actions button.light,
+.moderation-list button {
+  background: #fff3cd;
+  color: #472b7a;
+}
+
+.moderation-list section {
+  border-top: 1px solid rgba(71, 43, 122, 0.1);
+  padding-top: 14px;
+}
+
+.moderation-list h3 {
+  color: #2f1b52;
+  display: -webkit-box;
+  font-size: 16px;
+  line-height: 1.35;
+  margin: 0 0 10px;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.settings-form {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+@media (max-width: 960px) {
+  .admin-grid,
+  .secondary-grid,
+  .admin-form,
+  .settings-form {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+.job-admin-card {
+  grid-column: 1 / -1;
+}

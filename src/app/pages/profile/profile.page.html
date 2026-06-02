@@ -1,7 +1,7 @@
 <app-navbar></app-navbar>
 
 <ion-content [fullscreen]="true">
-<main class="app-page profile-page">
+<main class="app-page profile-page" [class.public-profile]="!isOwnProfile">
   <section class="profile-header-card">
     <div class="cover">
       <img src="assets/header_perfil.png" alt="" />
@@ -13,91 +13,116 @@
       <div class="identity">
         <span>{{ roleLabel }} • IFSP</span>
         <h1>{{ user.nome || 'Usuária Hipatec' }}</h1>
-        <p>@{{ user.username || 'hipatec' }} • {{ user.email }}</p>
+        <p>@{{ user.username || 'hipatec' }} <ng-container *ngIf="user.email">• {{ user.email }}</ng-container></p>
       </div>
-      <a class="edit-button" routerLink="/perfil/editar">Editar perfil</a>
+      <a class="edit-button" *ngIf="isOwnProfile" routerLink="/perfil/editar">Editar perfil</a>
     </div>
 
     <p class="bio">{{ user.bio }}</p>
 
     <div class="profile-stats">
-      <div><strong>12</strong><span>publicações</span></div>
-      <div><strong>{{ agenda.length }}</strong><span>compromissos</span></div>
-      <div><strong>18</strong><span>conexões</span></div>
+      <div><strong>{{ profilePosts.length }}</strong><span>Publicações</span></div>
+      <div *ngIf="user.role === 'mentoras'"><strong>{{ mentoriasCriadas }}</strong><span>Mentorias</span></div>
+      <div><strong>18</strong><span>Seguindo</span></div>
+      <div><strong>24</strong><span>Seguidores</span></div>
     </div>
-  </section>
-
-  <section class="profile-grid">
-    <article class="info-card">
-      <h2>Dados acadêmicos</h2>
-      <dl>
-        <div><dt>Curso</dt><dd>{{ user.curso || 'Tecnologia' }}</dd></div>
-        <div><dt>Semestre</dt><dd>{{ user.semestre || 'Em atualização' }}</dd></div>
-        <div><dt>Perfil</dt><dd>{{ roleLabel }}</dd></div>
-      </dl>
-    </article>
-
-    <article class="info-card">
-      <h2>Habilidades</h2>
-      <div class="chips">
-        <span *ngFor="let item of habilidades">{{ item }}</span>
-      </div>
-    </article>
-
-    <article class="info-card">
-      <h2>Áreas de interesse</h2>
-      <div class="chips">
-        <span *ngFor="let item of interesses">{{ item }}</span>
-      </div>
-    </article>
   </section>
 
   <p class="profile-feedback" *ngIf="feedback">{{ feedback }}</p>
 
-  <section class="agenda-card">
-    <div>
-      <span>Agenda</span>
-      <h2>Próximos compromissos</h2>
-    </div>
-    <div class="agenda-list" *ngIf="agenda.length; else agendaVazia">
-      <article *ngFor="let item of agenda">
-        <div class="date-box">
-          <strong>{{ item.data.slice(0, 5) }}</strong>
-          <span>{{ item.horario }}</span>
+  <section class="profile-dashboard-grid">
+    <div class="profile-side-column">
+      <article class="info-card academic-card content-card">
+        <h2>Dados acadêmicos</h2>
+        <dl>
+          <div><dt>Campus</dt><dd>{{ user.campus || 'IFSP' }}</dd></div>
+          <div><dt>Curso</dt><dd>{{ user.curso || 'Tecnologia' }}</dd></div>
+          <div><dt>Semestre</dt><dd>{{ user.semestre || 'Em atualização' }}</dd></div>
+        </dl>
+      </article>
+
+      <article class="info-card content-card">
+        <h2>Habilidades</h2>
+        <div class="chips">
+          <span *ngFor="let item of habilidades">{{ item }}</span>
         </div>
-        <div>
-          <a class="agenda-title" *ngIf="item.isMentoria" [routerLink]="['/mentorias', item.id]">{{ item.titulo }}</a>
-          <h3 *ngIf="!item.isMentoria">{{ item.titulo }}</h3>
-          <p>{{ item.tipo }}</p>
-        </div>
-        <div class="agenda-actions">
-          <small [class.pending]="item.status === 'Pendente'" [class.closed]="item.status === 'Encerrado'" [class.cancelled]="item.status === 'Cancelada'">{{ item.status }}</small>
-          <button type="button" *ngIf="user.role !== 'mentoras' && item.isMentoria" (click)="cancelarInscricao(item)">Cancelar inscrição</button>
-          <a *ngIf="user.role === 'mentoras' && item.isMentoria" routerLink="/mentorias/gerenciar">Gerenciar</a>
+      </article>
+
+      <article class="info-card content-card">
+        <h2>Áreas de interesse</h2>
+        <div class="chips">
+          <span *ngFor="let item of interesses">{{ item }}</span>
         </div>
       </article>
     </div>
-    <ng-template #agendaVazia>
-      <p class="empty-agenda">Você ainda não possui compromissos salvos.</p>
-    </ng-template>
+
+    <section class="agenda-card dashboard-agenda content-card" *ngIf="isOwnProfile">
+      <div>
+        <span>Agenda</span>
+        <h2>Próximos compromissos</h2>
+      </div>
+      <div class="agenda-list" *ngIf="agenda.length; else agendaVazia">
+        <article *ngFor="let item of agendaPaginada">
+          <div class="date-box">
+            <strong>{{ item.data.slice(0, 5) }}</strong>
+            <span>{{ item.horario }}</span>
+          </div>
+          <div>
+            <a class="agenda-title" *ngIf="item.isMentoria" [routerLink]="['/mentorias', item.id]">{{ item.titulo }}</a>
+            <h3 *ngIf="!item.isMentoria">{{ item.titulo }}</h3>
+            <p>{{ item.tipo }}</p>
+          </div>
+          <div class="agenda-actions">
+            <small [class.pending]="item.status === 'Pendente'" [class.closed]="item.status === 'Encerrado'" [class.cancelled]="item.status === 'Cancelada'">{{ item.status }}</small>
+            <button type="button" *ngIf="user.role !== 'mentoras' && item.isMentoria" (click)="cancelarInscricao(item)">Cancelar inscrição</button>
+            <a *ngIf="user.role === 'mentoras' && item.isMentoria" routerLink="/mentorias/gerenciar">Gerenciar</a>
+          </div>
+        </article>
+      </div>
+      <nav class="inline-pager agenda-pager" *ngIf="totalAgendaPages > 1" aria-label="Paginação da agenda">
+        <button type="button" (click)="mudarPaginaAgenda(-1)" [disabled]="agendaPage === 1">Anterior</button>
+        <span>Página {{ agendaPage }} de {{ totalAgendaPages }}</span>
+        <button type="button" (click)="mudarPaginaAgenda(1)" [disabled]="agendaPage === totalAgendaPages">Próxima</button>
+      </nav>
+      <ng-template #agendaVazia>
+        <p class="empty-agenda">Você ainda não possui compromissos salvos.</p>
+      </ng-template>
+    </section>
   </section>
 
-  <section class="activity-grid">
-    <article class="activity-card">
-      <h2>Publicações recentes</h2>
-      <div class="mini-post" *ngFor="let post of posts">
-        <strong>{{ post.autora }}</strong>
-        <p>{{ post.texto }}</p>
-      </div>
+  <section class="activity-card feed-card">
+    <h2>Publicações recentes</h2>
+    <article class="profile-post" *ngFor="let post of postsPaginados" [routerLink]="['/posts', post.postId]" tabindex="0" role="button" [class.comment-activity]="post.kind === 'comment'">
+      <header>
+        <a class="post-avatar" [routerLink]="authorRoute(post.autora)" (click)="$event.stopPropagation()">{{ post.autora.slice(0, 1) }}</a>
+        <div>
+          <a class="post-author" [routerLink]="authorRoute(post.autora)" (click)="$event.stopPropagation()">{{ post.autora }}</a>
+          <span *ngIf="post.kind === 'post'">{{ post.papel }} • {{ post.tempo }}</span>
+          <span class="comment-meta" *ngIf="post.kind === 'comment'">
+            <span>Comentou na publicação de {{ post.postAutora }}</span>
+            <span>{{ post.tempo }}</span>
+          </span>
+        </div>
+        <small>{{ categoryLabel(post.categoria) }}</small>
+      </header>
+      <p>{{ post.texto }}</p>
+      <footer>
+        <span *ngIf="post.kind === 'post'">{{ post.curtidas }} curtidas</span>
+        <span *ngIf="post.kind === 'post'">{{ post.comentarios }} comentários</span>
+        <span *ngIf="post.kind === 'comment'">Ver publicação completa</span>
+      </footer>
     </article>
 
-    <article class="activity-card">
-      <h2>Mentorias em destaque</h2>
-      <div class="mini-post" *ngFor="let mentoria of mentorias">
-        <strong>{{ mentoria.titulo }}</strong>
-        <p>{{ mentoria.mentora }} • {{ mentoria.data }}</p>
-      </div>
-    </article>
+    <div class="empty-profile-posts" *ngIf="!postsPaginados.length">
+      <h3>Nenhuma publicação recente.</h3>
+      <p>As publicações e comentários feitos por esta pessoa aparecerão aqui.</p>
+    </div>
+
+    <nav class="inline-pager posts-pagination" *ngIf="totalPostPages > 1" aria-label="Paginação de publicações">
+      <button type="button" (click)="mudarPaginaPosts(-1)" [disabled]="postsPage === 1">Anterior</button>
+      <span>Página {{ postsPage }} de {{ totalPostPages }}</span>
+      <button type="button" (click)="mudarPaginaPosts(1)" [disabled]="postsPage === totalPostPages">Próxima</button>
+    </nav>
   </section>
 </main>
   <app-footer [compact]="true"></app-footer>

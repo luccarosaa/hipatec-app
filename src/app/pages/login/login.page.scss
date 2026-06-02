@@ -212,3 +212,20 @@ h2.login-title{
     height: 82px;
   }
 }
+
+.back-with-icon {
+  align-items: center;
+  display: inline-flex;
+  gap: 6px;
+
+  svg {
+    fill: none;
+    flex: 0 0 auto;
+    height: 14px;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 2.2;
+    width: 14px;
+  }
+}

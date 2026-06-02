@@ -38,7 +38,17 @@ export class MentoriaDetailPage implements OnInit {
     }
 
     this.inscrita = true;
-    this.feedback = 'Inscrição confirmada. Você receberia os próximos passos por email no fluxo real.';
+    this.feedback = 'Inscrição confirmada. Você receberá os próximos passos por email.';
+  }
+
+  cancelarInscricao() {
+    if (!this.mentoria || !window.confirm(`Cancelar inscrição em ${this.mentoria.titulo}?`)) {
+      return;
+    }
+
+    saveInscritas(loadInscritas().filter(id => id !== this.mentoria?.id));
+    this.inscrita = false;
+    this.feedback = 'Inscrição cancelada com sucesso.';
   }
 
 }

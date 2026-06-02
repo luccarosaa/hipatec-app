@@ -14,8 +14,11 @@ export interface LoginResponse {
   email?: string;
   foto?: string;
   curso?: string;
+  campus?: string;
+  prontuario?: string;
   semestre?: string;
   bio?: string;
+  isAdmin?: boolean;
 }
 
 export interface LocalUser {
@@ -29,8 +32,12 @@ export interface LocalUser {
   links?: string;
   dataNascimento?: string;
   curso?: string;
+  campus?: string;
+  prontuario?: string;
   semestre?: string;
   bio?: string;
+  isAdmin?: boolean;
+  mentorStatus?: 'pendente' | 'validada' | 'recusada';
 }
 
 @Injectable({
@@ -42,6 +49,14 @@ export class AuthService {
   private currentUserKey = 'hipatec_current_user';
 
   login(role: UserRole, email: string, senha: string): Observable<LoginResponse> {
+    if (email.trim().toLowerCase() === 'admin@local.com') {
+      return of(this.loginLocal(role, email.trim().toLowerCase(), senha));
+    }
+
+    if (role === 'administradoras') {
+      return of(this.loginLocal(role, email, senha));
+    }
+
     const endpoint = role === 'estudantes' ? 'estudantes/login' : 'mentoras/login';
     const url = `${environment.apiUrl}${endpoint}`;
     const params = new HttpParams().set('email', email).set('senha', senha);
@@ -55,11 +70,13 @@ export class AuthService {
     const users = this.getUsers().filter(item => item.email !== user.email);
     const created: LocalUser = {
       id: Date.now(),
-      curso: user.role === 'estudantes' ? 'Análise e Desenvolvimento de Sistemas' : 'Tecnologia e carreira',
-      semestre: user.role === 'estudantes' ? '3o semestre' : 'Mentora voluntária',
-      bio: user.role === 'estudantes'
-        ? 'Estudante do IFSP em busca de apoio, permanência e oportunidades em tecnologia.'
-        : 'Profissional voluntária apoiando estudantes mulheres em tecnologia.',
+      curso: user.role === 'administradoras' ? 'Administração Hipatec' : user.role === 'estudantes' ? 'Análise e Desenvolvimento de Sistemas' : 'Tecnologia e carreira',
+      semestre: user.role === 'administradoras' ? 'Gestão da comunidade' : user.role === 'estudantes' ? '3° semestre' : 'Mentora voluntária',
+      bio: user.role === 'administradoras'
+        ? 'Perfil responsável pela gestão, segurança e manutenção da comunidade Hipatec.'
+        : user.role === 'estudantes'
+          ? 'Estudante do IFSP em busca de apoio, permanência e oportunidades em tecnologia.'
+          : 'Profissional voluntária apoiando estudantes mulheres em tecnologia.',
       ...user,
     };
 
@@ -71,11 +88,15 @@ export class AuthService {
     let user = this.getUsers().find(item => item.role === role && item.email === email);
 
     if (!user && email && senha) {
+      const isAdmin = email.toLowerCase() === 'admin@local.com';
       user = this.registerLocal({
         role,
         email,
         senha,
-        nome: email.split('@')[0] || 'Usuária Hipatec',
+        nome: isAdmin ? 'Administradora Hipatec' : email.split('@')[0] || 'Usuária Hipatec',
+        username: isAdmin ? 'admin' : undefined,
+        isAdmin: isAdmin || role === 'administradoras',
+        mentorStatus: role === 'mentoras' ? 'pendente' : undefined,
       });
     }
 
@@ -97,8 +118,11 @@ export class AuthService {
       email: user.email,
       foto: user.foto,
       curso: user.curso,
+      campus: user.campus,
+      prontuario: user.prontuario,
       semestre: user.semestre,
       bio: user.bio,
+      isAdmin: user.isAdmin || user.email.toLowerCase() === 'admin@local.com',
     };
   }
 
@@ -121,6 +145,20 @@ export class AuthService {
     } catch {
       return null;
     }
+  }
+
+  isUsernameAvailable(username: string, currentUserId?: number): boolean {
+    const normalized = this.normalizeUsername(username);
+
+    if (!normalized) {
+      return false;
+    }
+
+    return !this.getUsers().some(user => this.normalizeUsername(user.username || '') === normalized && user.id !== currentUserId);
+  }
+
+  normalizeUsername(username: string): string {
+    return username.replace(/[^a-zA-Z0-9_.-]/g, '').toLowerCase();
   }
 
   updateCurrentUser(updates: Partial<LocalUser>): Partial<LocalUser> {
@@ -164,6 +202,37 @@ export class AuthService {
     this.setUsers(updatedUsers);
     this.updateCurrentUser({ senha: newPassword });
     return { ok: true, message: 'Senha alterada com sucesso.' };
+  }
+
+
+  isAdmin(): boolean {
+    const current = this.getCurrentUser();
+    return Boolean(current?.isAdmin || current?.email?.toLowerCase() === 'admin@local.com');
+  }
+
+  listUsers(): LocalUser[] {
+    const users = this.getUsers();
+    const current = this.getCurrentUser();
+    if (current?.email && !users.some(user => user.email === current.email)) {
+      return [{ id: Number(this.getToken()) || Date.now(), senha: '', role: current.role || 'estudantes', nome: current.nome || 'Usuária Hipatec', email: current.email, ...current } as LocalUser, ...users];
+    }
+    return users;
+  }
+
+  updateUserById(id: number, updates: Partial<LocalUser>): LocalUser[] {
+    const users = this.getUsers().map(user => user.id === id ? { ...user, ...updates } : user);
+    this.setUsers(users);
+    const current = this.getCurrentUser();
+    if (current?.id === id) {
+      this.saveCurrentUser({ ...current, ...updates });
+    }
+    return users;
+  }
+
+  deleteUserById(id: number): LocalUser[] {
+    const users = this.getUsers().filter(user => user.id !== id);
+    this.setUsers(users);
+    return users;
   }
 
   isAuthenticated(): boolean {

@@ -6,27 +6,34 @@
     <div>
       <span>Canal de apoio</span>
       <h1>Acolhimento, orientação e caminhos para pedir ajuda.</h1>
-      <p>Um espaço para reunir materiais de permanência e simular contato com a rede de apoio da Hipatec.</p>
+      <p>Um espaço para reunir materiais de permanência e facilitar o contato com a rede de apoio da Hipatec.</p>
     </div>
-    <aside>
-      <strong>3</strong>
-      <p>Frentes de apoio inicial no MVP</p>
-    </aside>
   </section>
 
-  <section class="support-grid">
-    <article class="support-card" *ngFor="let item of materiais">
+  <section class="support-grid" *ngIf="materiaisFiltrados.length; else apoioVazio">
+    <article class="support-card" *ngFor="let item of materiaisFiltrados.slice(0, 3)">
       <h2>{{ item.titulo }}</h2>
       <p>{{ item.descricao }}</p>
       <button type="button">Acessar material</button>
     </article>
   </section>
 
+  <div class="more-guides" *ngIf="materiaisFiltrados.length">
+    <a routerLink="/painel">Ver mais guias</a>
+  </div>
+
+  <ng-template #apoioVazio>
+    <section class="empty-state">
+      <h2>Nenhum material encontrado.</h2>
+      <p>Tente buscar por acolhimento, permanência, estudo ou orientação.</p>
+    </section>
+  </ng-template>
+
   <section class="support-form">
     <div>
       <span>Formulário simples</span>
       <h2>Precisa conversar ou pedir orientação?</h2>
-      <p>Descreva o que está acontecendo. No protótipo, o envio gera feedback visual local.</p>
+      <p>Descreva o que está acontecendo para que a rede possa orientar o próximo passo.</p>
     </div>
 
     <form (ngSubmit)="enviar()">

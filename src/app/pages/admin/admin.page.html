@@ -1,0 +1,108 @@
+<app-navbar></app-navbar>
+
+<ion-content [fullscreen]="true">
+<main class="app-page admin-page">
+  <section class="page-hero">
+    <div>
+      <span>Administração</span>
+      <h1>Gestão da comunidade Hipatec.</h1>
+      <p>Cadastre vagas, gerencie administradoras e mantenha a base de mentoras atualizada.</p>
+    </div>
+  </section>
+  <p class="admin-feedback" *ngIf="feedback">{{ feedback }}</p>
+
+  <section class="admin-grid">
+    <article class="admin-card job-admin-card">
+      <div class="section-title-row compact-title">
+        <div><span>Vagas</span><h2>{{ editingVagaId ? 'Editar vaga' : 'Cadastrar vaga' }}</h2></div>
+      </div>
+      <form class="admin-form" (submit)="$event.preventDefault(); salvarVaga()">
+        <label>Título<input [(ngModel)]="vagaForm.titulo" name="titulo" /></label>
+        <label>Organização<input [(ngModel)]="vagaForm.organizacao" name="organizacao" /></label>
+        <label>Tipo<select [(ngModel)]="vagaForm.tipoVaga" name="tipoVaga"><option>Estágio</option><option>Efetivo</option><option>Temporário</option><option>Trainee</option><option>Bolsa</option></select></label>
+        <label>Formato<select [(ngModel)]="vagaForm.formato" name="formato"><option>Remoto</option><option>Presencial</option><option>Semi-presencial</option></select></label>
+        <label>Local<input [(ngModel)]="vagaForm.local" name="local" /></label>
+        <label>Estado<input [(ngModel)]="vagaForm.estado" name="estado" maxlength="2" /></label>
+        <label>Cidade<input [(ngModel)]="vagaForm.cidade" name="cidade" /></label>
+        <label>Área<input [(ngModel)]="vagaForm.area" name="area" /></label>
+        <label>Prazo<input [(ngModel)]="vagaForm.prazo" name="prazo" /></label>
+        <label>Link externo<input [(ngModel)]="vagaForm.linkExterno" name="linkExterno" placeholder="https://..." /></label>
+        <label class="full-field">Descrição<textarea [(ngModel)]="vagaForm.descricao" name="descricao" rows="3"></textarea></label>
+        <label class="full-field">Tags<input [(ngModel)]="vagaForm.tags" name="tags" placeholder="Frontend, Remoto, Júnior" /></label>
+        <button type="submit">{{ editingVagaId ? 'Salvar vaga' : 'Cadastrar vaga' }}</button>
+        <button class="light full-field" type="button" *ngIf="editingVagaId" (click)="cancelarEdicaoVaga()">Cancelar edição</button>
+      </form>
+
+      <div class="admin-list" *ngIf="adminVagas.length">
+        <article *ngFor="let vaga of adminVagas">
+          <div><strong>{{ vaga.titulo }}</strong><span>{{ vaga.organizacao }} • {{ vaga.area }}</span></div>
+          <div class="inline-actions"><button type="button" (click)="editarVagaPorId(vaga.id)">Editar</button><button type="button" class="light" (click)="removerVaga(vaga.id)">Excluir</button></div>
+        </article>
+      </div>
+    </article>
+
+
+  </section>
+
+  <section class="admin-grid secondary-grid">
+    <article class="admin-card">
+      <div class="section-title-row compact-title">
+        <div><span>Administradoras</span><h2>{{ editingAdminId ? 'Editar admin' : 'Adicionar admin' }}</h2></div>
+      </div>
+      <form class="admin-form one-column-form" (submit)="$event.preventDefault(); salvarAdmin()">
+        <label>Nome<input [(ngModel)]="adminForm.nome" name="adminNome" /></label>
+        <label>E-mail<input [(ngModel)]="adminForm.email" name="adminEmail" type="email" /></label>
+        <label>Usuário<input [(ngModel)]="adminForm.username" name="adminUsername" /></label>
+        <label>Senha<input [(ngModel)]="adminForm.senha" name="adminSenha" type="password" placeholder="Preencha para definir/alterar" /></label>
+        <label>Perfil<input value="Administrador" disabled /></label>
+        <button type="submit">{{ editingAdminId ? 'Salvar admin' : 'Adicionar admin' }}</button>
+        <button class="light full-field" type="button" *ngIf="editingAdminId" (click)="cancelarEdicao('admin')">Cancelar edição</button>
+      </form>
+
+      <div class="admin-list" *ngIf="admins.length">
+        <article *ngFor="let user of admins">
+          <div><strong>{{ user.nome }}</strong><span>{{ user.email }} • Administrador</span></div>
+          <div class="inline-actions"><button type="button" (click)="editarAdmin(user)">Editar</button><button type="button" class="light" (click)="excluirUsuario(user)">Excluir</button></div>
+        </article>
+      </div>
+    </article>
+
+    <article class="admin-card">
+      <div class="section-title-row compact-title">
+        <div><span>Mentoras</span><h2>{{ editingMentoraId ? 'Editar mentora' : 'Adicionar mentora' }}</h2></div>
+      </div>
+      <form class="admin-form one-column-form" (submit)="$event.preventDefault(); salvarMentora()">
+        <label>Nome<input [(ngModel)]="mentoraForm.nome" name="mentoraNome" /></label>
+        <label>E-mail<input [(ngModel)]="mentoraForm.email" name="mentoraEmail" type="email" /></label>
+        <label>Usuário<input [(ngModel)]="mentoraForm.username" name="mentoraUsername" /></label>
+        <label>Senha<input [(ngModel)]="mentoraForm.senha" name="mentoraSenha" type="password" placeholder="Preencha para definir/alterar" /></label>
+        <label>Área/curso<input [(ngModel)]="mentoraForm.curso" name="mentoraCurso" /></label>
+        <label>Campus<input [(ngModel)]="mentoraForm.campus" name="mentoraCampus" /></label>
+        <button type="submit">{{ editingMentoraId ? 'Salvar mentora' : 'Adicionar mentora' }}</button>
+        <button class="light full-field" type="button" *ngIf="editingMentoraId" (click)="cancelarEdicao('mentora')">Cancelar edição</button>
+      </form>
+
+      <div class="admin-list" *ngIf="mentoras.length; else semMentoras">
+        <article *ngFor="let user of mentoras">
+          <div><strong>{{ user.nome }}</strong><span>{{ user.email }} • {{ user.mentorStatus || 'pendente' }}</span></div>
+          <div class="inline-actions"><button type="button" (click)="editarMentora(user)">Editar</button><button type="button" (click)="validarMentora(user, 'validada')">Validar</button><button type="button" class="light" (click)="excluirUsuario(user)">Excluir</button></div>
+        </article>
+      </div>
+      <ng-template #semMentoras><p class="empty-copy">Nenhuma mentora cadastrada no mock local.</p></ng-template>
+    </article>
+  </section>
+
+  <section class="admin-card settings-admin-card">
+    <div class="section-title-row compact-title">
+      <div><span>Configurações</span><h2>Questões específicas</h2></div>
+    </div>
+    <div class="admin-form settings-form">
+      <label>Contato de apoio<input [(ngModel)]="settings.contatoApoio" name="contatoApoio" /></label>
+      <label>Política de uso<input [(ngModel)]="settings.termoUso" name="termoUso" /></label>
+      <label class="full-field">Aviso da comunidade<textarea [(ngModel)]="settings.avisoComunidade" name="avisoComunidade" rows="3"></textarea></label>
+      <button type="button" (click)="salvarConfiguracoes()">Salvar configurações</button>
+    </div>
+  </section>
+</main>
+<app-footer [compact]="true"></app-footer>
+</ion-content>

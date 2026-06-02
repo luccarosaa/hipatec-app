@@ -2,47 +2,113 @@
 
 <ion-content [fullscreen]="true">
 <main class="app-page oportunidades-page">
-  <section class="page-hero">
+  <section class="page-hero jobs-hero">
     <div>
-      <span>Oportunidades</span>
-      <h1>Vagas, eventos e oficinas para crescer em tecnologia.</h1>
-      <p>Uma curadoria simples para aproximar estudantes de experiências práticas, programas afirmativos e conteúdos úteis.</p>
+      <span>Vagas</span>
+      <h1>Vagas afirmativas e oportunidades de carreira.</h1>
+      <p>Encontre processos seletivos e programas voltados para estudantes mulheres em tecnologia.</p>
     </div>
-    <aside>
-      <strong>{{ filtradas.length }}</strong>
-      <p>Itens encontrados no filtro atual</p>
+  </section>
+
+  <section class="jobs-layout">
+    <div class="jobs-list" *ngIf="filtradas.length; else vazio">
+      <article class="job-card" *ngFor="let item of filtradas">
+        <header>
+          <div class="company-mark" aria-hidden="true">{{ item.organizacao.slice(0, 1) }}</div>
+          <div>
+            <strong>{{ item.organizacao }}</strong>
+            <span>{{ item.area }} • {{ item.formato }}</span>
+          </div>
+          <time>{{ item.publicadaHa }}</time>
+        </header>
+
+        <h2>{{ item.titulo }}</h2>
+        <p>{{ item.descricao }}</p>
+
+        <div class="tags">
+          <span *ngFor="let tag of item.tags">{{ tag }}</span>
+        </div>
+
+        <dl>
+          <div><dt>Tipo</dt><dd>{{ item.tipoVaga }}</dd></div>
+          <div><dt>Local</dt><dd>{{ item.local }}</dd></div>
+          <div><dt>Cidade</dt><dd>{{ item.cidade }} - {{ item.estado }}</dd></div>
+          <div><dt>Prazo</dt><dd>{{ item.prazo }}</dd></div>
+        </dl>
+
+        <div class="job-actions">
+          <a *ngIf="item.linkExterno" [href]="item.linkExterno" target="_blank" rel="noopener noreferrer" aria-label="Ver vaga em site externo">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M21 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5"/></svg>
+            Ver vaga
+          </a>
+          <a class="edit-job-link" *ngIf="isAdmin" routerLink="/admin" [queryParams]="{ vaga: item.id }">
+            Editar vaga
+          </a>
+        </div>
+      </article>
+    </div>
+
+    <aside class="job-filters" aria-label="Filtros de pesquisa">
+      <div class="filter-heading">
+        <h2>Filtros de pesquisa</h2>
+        <button type="button" (click)="limparFiltros()">Limpar</button>
+      </div>
+
+      <label>
+        Tipo de vaga
+        <select [(ngModel)]="tipoVaga">
+          <option value="">Todas</option>
+          <option *ngFor="let option of tiposVaga" [value]="option">{{ option }}</option>
+        </select>
+      </label>
+
+      <label>
+        Formato
+        <select [(ngModel)]="formato">
+          <option value="">Todos</option>
+          <option *ngFor="let option of formatos" [value]="option">{{ option }}</option>
+        </select>
+      </label>
+
+      <label>
+        Local
+        <select [(ngModel)]="local">
+          <option value="">Todos</option>
+          <option *ngFor="let option of locais" [value]="option">{{ option }}</option>
+        </select>
+      </label>
+
+      <label>
+        Estado
+        <select [(ngModel)]="estado" (ngModelChange)="atualizarEstado()">
+          <option value="">Todos</option>
+          <option *ngFor="let option of estados" [value]="option">{{ option }}</option>
+        </select>
+      </label>
+
+      <label>
+        Cidade
+        <select [(ngModel)]="cidade">
+          <option value="">Todas</option>
+          <option *ngFor="let option of cidades" [value]="option">{{ option }}</option>
+        </select>
+      </label>
+
+      <label>
+        Área
+        <select [(ngModel)]="area">
+          <option value="">Todas</option>
+          <option *ngFor="let option of areas" [value]="option">{{ option }}</option>
+        </select>
+      </label>
     </aside>
   </section>
 
-  <section class="filters" aria-label="Filtros de oportunidades">
-    <button type="button" [class.active]="filtro === 'todas'" (click)="filtro = 'todas'">Todas</button>
-    <button type="button" [class.active]="filtro === 'vaga'" (click)="filtro = 'vaga'">Vagas</button>
-    <button type="button" [class.active]="filtro === 'evento'" (click)="filtro = 'evento'">Eventos</button>
-    <button type="button" [class.active]="filtro === 'oficina'" (click)="filtro = 'oficina'">Oficinas</button>
-    <button type="button" [class.active]="filtro === 'conteudo'" (click)="filtro = 'conteudo'">Conteúdos</button>
-  </section>
-
-  <section class="opportunities-grid" *ngIf="filtradas.length; else vazio">
-    <article class="opportunity-card" *ngFor="let item of filtradas">
-      <span class="type">{{ item.tipo }}</span>
-      <h2>{{ item.titulo }}</h2>
-      <p>{{ item.descricao }}</p>
-      <dl>
-        <div><dt>Organização</dt><dd>{{ item.organizacao }}</dd></div>
-        <div><dt>Local</dt><dd>{{ item.local }}</dd></div>
-        <div><dt>Prazo</dt><dd>{{ item.prazo }}</dd></div>
-      </dl>
-      <div class="tags">
-        <span *ngFor="let tag of item.tags">{{ tag }}</span>
-      </div>
-      <button type="button">Salvar oportunidade</button>
-    </article>
-  </section>
-
   <ng-template #vazio>
-    <section class="empty-state">
-      <h2>Nenhuma oportunidade neste filtro.</h2>
-      <p>Tente outra categoria ou volte para todas as oportunidades disponíveis no protótipo.</p>
+    <section class="empty-state jobs-empty">
+      <h2>Nenhuma vaga encontrada.</h2>
+      <p>Tente ajustar os filtros ou buscar por outro termo.</p>
+      <button type="button" (click)="limparFiltros()">Limpar filtros</button>
     </section>
   </ng-template>
 </main>

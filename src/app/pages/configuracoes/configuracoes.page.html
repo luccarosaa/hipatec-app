@@ -2,61 +2,89 @@
 
 <ion-content [fullscreen]="true">
 <main class="app-page settings-page">
-  <section class="page-hero">
+  <section class="settings-hero">
     <div>
       <span>Configurações</span>
       <h1>Preferências da conta</h1>
-      <p>Área simples para organizar conta, notificações, privacidade e acessibilidade no protótipo.</p>
+      <p>Gerencie seus dados de acesso, notificações e preferências da experiência Hipatec.</p>
     </div>
-    <aside>
-      <strong>MVP</strong>
-      <p>Preferências locais e placeholders</p>
-    </aside>
+    <button class="logout-danger" type="button" (click)="sair()" aria-label="Sair da conta">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>
+      Sair da conta
+    </button>
   </section>
 
   <section class="account-grid">
-    <article>
-      <h2>Editar e-mail</h2>
-      <p>Seu e-mail atual aparece abaixo. Use um formato válido para salvar a alteração.</p>
-      <label>Email atual
-        <input type="email" [(ngModel)]="email" name="email" />
-      </label>
+    <article class="settings-card account-card">
+      <div class="card-heading">
+        <span class="card-icon">@</span>
+        <div>
+          <h2>Editar e-mail</h2>
+          <p>Use um endereço válido para manter sua conta atualizada.</p>
+        </div>
+      </div>
+
+      <label class="field-label" for="email">E-mail atual</label>
+      <input id="email" type="email" [(ngModel)]="email" name="email" />
       <p class="feedback" *ngIf="emailFeedback">{{ emailFeedback }}</p>
-      <button type="button" (click)="salvarEmail()">Salvar e-mail</button>
+      <div class="card-actions-right"><button class="primary-action" type="button" (click)="salvarEmail()">Salvar e-mail</button></div>
     </article>
 
-    <article>
-      <h2>Alterar senha</h2>
-      <p>A senha deve ter 8 a 18 caracteres, com maiúscula, minúscula, número e caractere especial.</p>
-      <label>Senha atual<input type="password" [(ngModel)]="senhaAtual" name="senhaAtual" /></label>
-      <label>Nova senha<input type="password" [(ngModel)]="novaSenha" name="novaSenha" /></label>
-      <label>Confirmar nova senha<input type="password" [(ngModel)]="confirmarSenha" name="confirmarSenha" /></label>
+    <article class="settings-card password-card">
+      <div class="card-heading">
+        <span class="card-icon">*</span>
+        <div>
+          <h2>Alterar senha</h2>
+          <p>8 a 18 caracteres, com maiúscula, minúscula, número e caractere especial.</p>
+        </div>
+      </div>
+
+      <div class="password-grid">
+        <label class="field-label" for="senhaAtual">Senha atual</label>
+        <input id="senhaAtual" type="password" [(ngModel)]="senhaAtual" name="senhaAtual" />
+        <label class="field-label" for="novaSenha">Nova senha</label>
+        <input id="novaSenha" type="password" [(ngModel)]="novaSenha" name="novaSenha" />
+        <label class="field-label" for="confirmarSenha">Confirmar nova senha</label>
+        <input id="confirmarSenha" type="password" [(ngModel)]="confirmarSenha" name="confirmarSenha" />
+      </div>
       <p class="feedback" *ngIf="senhaFeedback">{{ senhaFeedback }}</p>
-      <button type="button" (click)="alterarSenha()">Alterar senha</button>
+      <div class="card-actions-right"><button class="primary-action" type="button" (click)="alterarSenha()">Alterar senha</button></div>
     </article>
   </section>
 
   <section class="settings-grid">
-    <article>
-      <h2>Notificações</h2>
-      <label><input type="checkbox" [(ngModel)]="emailNotificacoes" /> Receber avisos por email</label>
-      <label><input type="checkbox" [(ngModel)]="oportunidades" /> Destacar oportunidades e eventos</label>
+    <article class="settings-card compact-card">
+      <div class="card-heading compact-heading">
+        <span class="card-icon">!</span>
+        <h2>Notificações</h2>
+      </div>
+      <label class="check-row"><input type="checkbox" [(ngModel)]="emailNotificacoes" /> Receber avisos por e-mail</label>
+      <label class="check-row"><input type="checkbox" [(ngModel)]="oportunidades" /> Destacar vagas, eventos e oficinas</label>
     </article>
 
-    <article>
-      <h2>Privacidade</h2>
-      <label><input type="checkbox" [(ngModel)]="perfilPublico" /> Permitir que meu perfil apareça na comunidade</label>
-      <p>Termos e Política de uso: conteúdo placeholder para a próxima etapa do projeto.</p>
+    <article class="settings-card compact-card">
+      <div class="card-heading compact-heading">
+        <span class="card-icon">#</span>
+        <h2>Privacidade</h2>
+      </div>
+      <label class="check-row"><input type="checkbox" [(ngModel)]="perfilPublico" /> Permitir perfil visível na comunidade</label>
+      <p>Revise suas preferências de visibilidade e uso da comunidade.</p>
     </article>
 
-    <article>
-      <h2>Acessibilidade</h2>
-      <label><input type="checkbox" [(ngModel)]="altoContraste" /> Preferir contraste reforçado</label>
-      <p>As preferências visuais podem ser conectadas ao tema global em uma iteração futura.</p>
+    <article class="settings-card compact-card">
+      <div class="card-heading compact-heading">
+        <span class="card-icon">Aa</span>
+        <h2>Acessibilidade</h2>
+      </div>
+      <label class="check-row"><input type="checkbox" [(ngModel)]="altoContraste" /> Preferir contraste reforçado</label>
+      <p>Ajuste preferências visuais para melhorar sua experiência de leitura.</p>
     </article>
   </section>
 
-  <button class="logout-danger" type="button" (click)="sair()">Sair da conta</button>
+  <section class="preferences-save">
+    <p *ngIf="preferenciasFeedback">{{ preferenciasFeedback }}</p>
+    <button class="primary-action" type="button" (click)="salvarPreferencias()">Salvar preferências</button>
+  </section>
 </main>
 <app-footer [compact]="true"></app-footer>
 </ion-content>

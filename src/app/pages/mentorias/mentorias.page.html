@@ -4,14 +4,10 @@
 <main class="app-page mentorias-page">
   <section class="page-hero">
     <div>
-      <span>Mentorias</span>
-      <h1>Orientação prática para carreira, estudos e permanência.</h1>
-      <p>Escolha uma mentoria, veja detalhes e confirme sua inscrição com feedback visual local.</p>
+      <span>{{ view === 'todas' ? 'Aprendizado' : 'Meu aprendizado' }}</span>
+      <h1>{{ view === 'todas' ? 'Explore mentorias para seguir evoluindo.' : 'Acompanhe suas mentorias e próximos passos.' }}</h1>
+      <p>{{ view === 'todas' ? 'Veja as mentorias disponíveis e escolha os próximos temas para participar.' : 'Suas inscrições ficam em destaque, com novas sugestões para continuar aprendendo.' }}</p>
     </div>
-    <aside>
-      <strong>{{ mentorias.length }}</strong>
-      <p>Mentorias abertas neste protótipo</p>
-    </aside>
   </section>
 
   <p class="feedback" *ngIf="feedback">{{ feedback }}</p>
@@ -20,34 +16,105 @@
     <a routerLink="/mentorias/gerenciar">Gerenciar minhas mentorias</a>
   </div>
 
-  <section class="mentorias-grid">
-    <article class="mentoria-card" *ngFor="let mentoria of mentorias">
-      <div class="card-top">
-        <span>{{ mentoria.tema }}</span>
-        <strong>{{ mentoria.vagas }} vagas</strong>
-      </div>
-      <h2>{{ mentoria.titulo }}</h2>
-      <p>{{ mentoria.descricao }}</p>
-
-      <dl>
-        <div><dt>Mentora</dt><dd>{{ mentoria.mentora }}</dd></div>
-        <div><dt>Quando</dt><dd>{{ mentoria.data }} às {{ mentoria.horario }}</dd></div>
-        <div><dt>Formato</dt><dd>{{ mentoria.formato }}</dd></div>
-      </dl>
-
-      <div class="tags">
-        <span *ngFor="let tag of mentoria.tags">{{ tag }}</span>
+  <ng-container *ngIf="view === 'aprendizado'; else catalogoAprendizado">
+    <section class="learning-section">
+      <div class="section-title-row">
+        <div>
+          <span>Inscrições</span>
+          <h2>Mentorias inscritas</h2>
+        </div>
       </div>
 
-      <div class="card-actions">
-        <a [routerLink]="['/mentorias', mentoria.id]">Ver detalhes</a>
-        <button type="button" [class.done]="isInscrita(mentoria.id)" (click)="inscrever(mentoria)">
-          {{ isInscrita(mentoria.id) ? 'Inscrita' : 'Inscrever-se' }}
-        </button>
-      </div>
-    </article>
-  </section>
+      <section class="mentorias-grid compact-grid" *ngIf="mentoriasInscritas.length; else semInscricoes">
+        <article class="mentoria-card" *ngFor="let mentoria of mentoriasInscritas">
+          <ng-container *ngTemplateOutlet="mentoriaCard; context: { mentoria: mentoria }"></ng-container>
+        </article>
+      </section>
+    </section>
 
+    <section class="learning-section">
+      <div class="section-title-row">
+        <div>
+          <span>Continuar aprendendo</span>
+          <h2>Novas mentorias para participar</h2>
+        </div>
+      </div>
+
+      <section class="mentorias-grid suggested-grid" *ngIf="continuarAprendendo.length; else semSugestoes">
+        <article class="mentoria-card" *ngFor="let mentoria of continuarAprendendo">
+          <ng-container *ngTemplateOutlet="mentoriaCard; context: { mentoria: mentoria }"></ng-container>
+        </article>
+      </section>
+      <div class="more-row" *ngIf="continuarAprendendo.length">
+        <a class="primary-action-link" routerLink="/mentorias" [queryParams]="{ view: 'todas' }">Ver mais</a>
+      </div>
+    </section>
+  </ng-container>
+
+  <ng-template #catalogoAprendizado>
+    <section class="learning-section">
+      <div class="section-title-row">
+        <div>
+          <span>Catálogo</span>
+          <h2>Mentorias disponíveis</h2>
+        </div>
+        <a class="secondary-action back-with-icon" routerLink="/mentorias"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>Voltar ao meu aprendizado</a>
+      </div>
+
+      <section class="mentorias-grid" *ngIf="catalogoMentorias.length; else mentoriasVazias">
+        <article class="mentoria-card" *ngFor="let mentoria of catalogoMentorias">
+          <ng-container *ngTemplateOutlet="mentoriaCard; context: { mentoria: mentoria }"></ng-container>
+        </article>
+      </section>
+    </section>
+  </ng-template>
+
+  <ng-template #mentoriaCard let-mentoria="mentoria">
+    <div class="card-top">
+      <span>{{ mentoria.tema }}</span>
+      <strong>{{ mentoria.vagas }} vagas</strong>
+    </div>
+    <h2>{{ mentoria.titulo }}</h2>
+    <p>{{ mentoria.descricao }}</p>
+
+    <dl>
+      <div><dt>Mentora</dt><dd>{{ mentoria.mentora }}</dd></div>
+      <div><dt>Quando</dt><dd>{{ mentoria.data }} às {{ mentoria.horario }}</dd></div>
+      <div><dt>Formato</dt><dd>{{ mentoria.formato }}</dd></div>
+    </dl>
+
+    <div class="tags">
+      <span *ngFor="let tag of mentoria.tags">{{ tag }}</span>
+    </div>
+
+    <div class="card-actions">
+      <a [routerLink]="['/mentorias', mentoria.id]">Ver detalhes</a>
+      <button type="button" [class.done]="isInscrita(mentoria.id)" (click)="inscrever(mentoria)">
+        {{ isInscrita(mentoria.id) ? 'Inscrita' : 'Inscrever-se' }}
+      </button>
+    </div>
+  </ng-template>
+
+  <ng-template #semInscricoes>
+    <section class="empty-state inline-empty">
+      <h2>Nenhuma mentoria inscrita ainda.</h2>
+      <p>Escolha uma sugestão abaixo para começar seu acompanhamento.</p>
+    </section>
+  </ng-template>
+
+  <ng-template #semSugestoes>
+    <section class="empty-state inline-empty">
+      <h2>Sem novas sugestões no momento.</h2>
+      <p>Suas mentorias inscritas já aparecem acima.</p>
+    </section>
+  </ng-template>
+
+  <ng-template #mentoriasVazias>
+    <section class="empty-state">
+      <h2>Nenhuma mentoria encontrada.</h2>
+      <p>Tente buscar por tema, mentora ou área de interesse.</p>
+    </section>
+  </ng-template>
 </main>
   <app-footer [compact]="true"></app-footer>
 </ion-content>

@@ -1,15 +1,27 @@
 <footer class="hipatec-footer" [class.compact]="compact">
   <div class="footer-brand">
-    <strong>Hipatec</strong>
-    <p>Projeto acadêmico voltado ao acolhimento e permanência de mulheres na tecnologia.</p>
+    <div class="brand-copy">
+      <img src="assets/logo_hipatec_roxo.png" alt="Hipatec" class="footer-logo" />
+      <p>Projeto acadêmico voltado ao acolhimento e permanência de mulheres na tecnologia.</p>
+    </div>
+    <small>© 2026 Hipatec. Todos os direitos reservados.</small>
   </div>
 
-  <nav aria-label="Links do rodapé Hipatec">
-    <a routerLink="/home">Sobre o projeto</a>
+  <nav aria-label="Links do rodapé Hipatec" *ngIf="!compact; else compactLinks">
+    <a routerLink="/home">Sobre</a>
     <a routerLink="/mentorias">Mentorias</a>
     <a routerLink="/feed">Comunidade</a>
-    <a routerLink="/oportunidades">Oportunidades</a>
+    <a routerLink="/vagas">Vagas</a>
     <a routerLink="/apoio">Acessibilidade</a>
     <a routerLink="/configuracoes">Política de uso</a>
   </nav>
+
+  <ng-template #compactLinks>
+    <nav aria-label="Links do rodapé interno Hipatec">
+      <a routerLink="/home">Home</a>
+      <a routerLink="/apoio">Apoio</a>
+      <a routerLink="/configuracoes">Acessibilidade</a>
+      <a routerLink="/configuracoes">Política de uso</a>
+    </nav>
+  </ng-template>
 </footer>

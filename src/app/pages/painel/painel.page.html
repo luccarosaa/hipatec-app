@@ -1,0 +1,115 @@
+<app-navbar></app-navbar>
+
+<ion-content [fullscreen]="true">
+<main class="app-page painel-page">
+  <section class="page-hero">
+    <div>
+      <span>Painel</span>
+      <h1>Aprendizado, mentorias e conteúdos da Hipatec.</h1>
+      <p>Encontre mentorias abertas, oficinas e guias para avançar nos estudos e na carreira.</p>
+    </div>
+  </section>
+
+
+  <section class="panel-section">
+    <div class="section-title-row">
+      <div>
+        <span>Mentorias</span>
+        <h2>Inscreva-se em novas mentorias</h2>
+      </div>
+      <a class="secondary-action" routerLink="/mentorias" [queryParams]="{ view: 'todas' }">Ver mais</a>
+    </div>
+
+    <div class="panel-grid" *ngIf="mentoriasSugeridas.length; else semMentorias">
+      <article class="panel-card" *ngFor="let mentoria of mentoriasSugeridas">
+        <span class="eyebrow">{{ mentoria.tema }}</span>
+        <h3>{{ mentoria.titulo }}</h3>
+        <p>{{ mentoria.descricao }}</p>
+        <small>{{ mentoria.mentora }} • {{ mentoria.data }} às {{ mentoria.horario }}</small>
+        <div class="tags"><span *ngFor="let tag of mentoria.tags">{{ tag }}</span></div>
+        <div class="card-actions">
+          <a [routerLink]="['/painel/itens', painelItemId('mentoria', mentoria.id)]">Ver detalhes</a>
+          <button type="button" (click)="inscrever(mentoria)">Inscrever-se</button>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="panel-section">
+    <div class="section-title-row compact-title">
+      <div>
+        <span>Oficinas e eventos</span>
+        <h2>Atividades abertas</h2>
+      </div>
+    </div>
+    <div class="panel-grid">
+      <article class="panel-card" *ngFor="let item of oficinasFiltradas">
+        <span class="eyebrow">{{ item.tipo }}</span>
+        <h3>{{ item.titulo }}</h3>
+        <p>{{ item.descricao }}</p>
+        <small>{{ item.local }} • {{ item.prazo }}</small>
+        <div class="tags"><span *ngFor="let tag of item.tags">{{ tag }}</span></div>
+        <div class="card-actions">
+          <a class="secondary-button" [routerLink]="['/painel/itens', painelItemId('oportunidade', item.id)]">Ver detalhes</a>
+          <button type="button" [class.done]="isPainelInscrito(painelKey('atividade', item.titulo))" (click)="alternarInscricaoPainel(painelKey('atividade', item.titulo), item.titulo)">
+            {{ isPainelInscrito(painelKey('atividade', item.titulo)) ? 'Cancelar inscrição' : 'Inscrever-se' }}
+          </button>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="panel-section">
+    <div class="section-title-row compact-title">
+      <div>
+        <span>Guias Hipatec</span>
+        <h2>Conteúdos oficiais</h2>
+      </div>
+    </div>
+    <div class="panel-grid">
+      <article class="panel-card" *ngFor="let item of guiasFiltrados">
+        <span class="eyebrow">Guia</span>
+        <h3>{{ item.titulo }}</h3>
+        <p>{{ item.descricao }}</p>
+        <small>Conteúdo oficial Hipatec</small>
+        <div class="tags"><span>Apoio</span><span>Permanência</span></div>
+        <div class="card-actions">
+          <a class="secondary-button" [routerLink]="['/painel/itens', painelItemId('guia', item.titulo)]">Ver detalhes</a>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="panel-section">
+    <div class="section-title-row compact-title">
+      <div>
+        <span>Cursos</span>
+        <h2>Trilhas planejadas</h2>
+      </div>
+    </div>
+    <div class="panel-grid">
+      <article class="panel-card" *ngFor="let curso of cursos">
+        <span class="eyebrow">{{ curso.status }}</span>
+        <h3>{{ curso.titulo }}</h3>
+        <p>{{ curso.descricao }}</p>
+        <small>Trilha Hipatec</small>
+        <div class="tags"><span *ngFor="let tag of curso.tags">{{ tag }}</span></div>
+        <div class="card-actions">
+          <a class="secondary-button" [routerLink]="['/painel/itens', curso.id]">Ver detalhes</a>
+          <button type="button" [class.done]="isPainelInscrito(curso.id)" (click)="alternarInscricaoPainel(curso.id, curso.titulo)">
+            {{ isPainelInscrito(curso.id) ? 'Cancelar inscrição' : 'Inscrever-se' }}
+          </button>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <ng-template #semMentorias>
+    <section class="empty-state inline-empty">
+      <h2>Nenhuma mentoria encontrada.</h2>
+      <p>Tente buscar por outra área ou veja seu aprendizado atual.</p>
+    </section>
+  </ng-template>
+</main>
+<app-footer [compact]="true"></app-footer>
+</ion-content>

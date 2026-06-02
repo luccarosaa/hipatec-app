@@ -5,7 +5,11 @@
         <img src="assets/logo_roxo.png" alt="Hipatec" />
       </a>
 
-      <nav class="public-nav" aria-label="Navegação pública">
+      <button class="public-menu-toggle" type="button" (click)="toggleMenu()" [attr.aria-expanded]="menuOpen" aria-controls="public-nav" aria-label="Abrir menu da apresentação">
+        <span></span><span></span><span></span>
+      </button>
+
+      <nav class="public-nav" id="public-nav" [class.open]="menuOpen" aria-label="Navegação pública">
         <a href="#sobre" (click)="scrollToSection('sobre', $event)">Sobre</a>
         <a href="#mentorias" (click)="scrollToSection('mentorias', $event)">Mentorias</a>
         <a href="#comunidade" (click)="scrollToSection('comunidade', $event)">Comunidade</a>
@@ -67,7 +71,7 @@
         <h2>Representatividade começa no acesso, mas se sustenta com permanência.</h2>
       </div>
       <p>
-        A Hipatec nasce para fortalecer mulheres do IFSP em tecnologia com uma rede de acolhimento, trocas e referências. O foco do MVP é criar pontes entre alunas, mentoras e oportunidades sem depender de cursos completos nesta fase.
+        A Hipatec nasce para fortalecer mulheres do IFSP em tecnologia com uma rede de acolhimento, trocas e referências. A proposta é criar pontes entre alunas, mentoras e oportunidades, fortalecendo trajetórias reais na tecnologia.
       </p>
     </section>
 
@@ -91,7 +95,7 @@
 
     <section id="mentorias" class="section">
       <div class="section-heading">
-        <span class="section-kicker">Mentorias do MVP</span>
+        <span class="section-kicker">Mentorias em destaque</span>
         <h2>Encontros objetivos para avançar com acompanhamento.</h2>
         <button type="button" class="section-action" (click)="openAccessInvite($event)">Ver todas</button>
       </div>

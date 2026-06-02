@@ -13,47 +13,92 @@
     <p class="form-eyebrow">Cadastro Hipatec</p>
     <h1 class="register-title">Crie sua conta</h1>
 
-    <ion-segment [value]="role" (ionChange)="switchRole($event)">
-      <ion-segment-button value="estudantes">
-        <ion-label>Estudante</ion-label>
-      </ion-segment-button>
-      <ion-segment-button value="mentoras">
-        <ion-label>Mentora</ion-label>
-      </ion-segment-button>
-    </ion-segment>
-
-    <div class="input-group">
-      <label>Nome completo</label>
-      <input type="text" [(ngModel)]="nome" placeholder="digite seu Nome completo" />
+    <div class="step-indicator" aria-label="Etapas do cadastro">
+      <span [class.active]="etapa === 1">1. Conta</span>
+      <span [class.active]="etapa === 2">2. IFSP</span>
     </div>
 
-    <div class="input-group">
-      <label>Nome de usuário</label>
-      <input type="text" [(ngModel)]="username" placeholder="Ex: anaclara" />
-    </div>
+    <ng-container *ngIf="etapa === 1; else vinculoIfsp">
+      <ion-segment [value]="role" (ionChange)="switchRole($event)">
+        <ion-segment-button value="estudantes">
+          <ion-label>Estudante</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="mentoras">
+          <ion-label>Mentora</ion-label>
+        </ion-segment-button>
+      </ion-segment>
 
-    <div class="input-group">
-      <label>Data de nascimento</label>
-      <input type="date" [(ngModel)]="dataNascimento" />
-    </div>
+      <div class="input-group">
+        <label>Nome completo</label>
+        <input type="text" [(ngModel)]="nome" placeholder="Digite seu nome completo" />
+      </div>
 
-    <div class="input-group">
-      <label>Email</label>
-      <input type="email" [(ngModel)]="email" placeholder="seuemail@exemplo.com" />
-    </div>
+      <div class="input-group">
+        <label>Nome de usuário</label>
+        <div class="input-affix">
+          <span>@</span>
+          <input type="text" [(ngModel)]="username" placeholder="anaclara" />
+        </div>
+      </div>
 
-    <div class="input-group">
-      <label>Senha</label>
-      <input type="password" [(ngModel)]="senha" placeholder="8 a 18 caracteres com A-z, número e símbolo" />
-    </div>
+      <div class="input-group">
+        <label>Data de nascimento</label>
+        <input type="date" [(ngModel)]="dataNascimento" />
+      </div>
 
-    <p class="feedback" *ngIf="feedback">{{ feedback }}</p>
+      <div class="input-group">
+        <label>Email</label>
+        <input type="email" [(ngModel)]="email" placeholder="seuemail@exemplo.com" />
+      </div>
 
-    <button class="btn-register" (click)="cadastrar()">Cadastrar</button>
+      <div class="input-group">
+        <label>Senha</label>
+        <input type="password" [(ngModel)]="senha" placeholder="8 a 18 caracteres com A-z, número e símbolo" />
+      </div>
+
+      <p class="feedback" *ngIf="feedback">{{ feedback }}</p>
+
+      <button class="btn-register" type="button" (click)="continuar()">Continuar</button>
+    </ng-container>
+
+    <ng-template #vinculoIfsp>
+      <div class="vinculo-heading">
+        <span>{{ roleLabel }}</span>
+        <h2>Dados do IFSP</h2>
+      </div>
+
+      <div class="input-group">
+        <label>Campus</label>
+        <select [(ngModel)]="campus" (ngModelChange)="atualizarCampus()">
+          <option value="">Selecione o campus</option>
+          <option *ngFor="let item of campi" [value]="item.nome">{{ item.nome }}</option>
+        </select>
+      </div>
+
+      <div class="input-group">
+        <label>Prontuário</label>
+        <input type="text" [(ngModel)]="prontuario" placeholder="Ex: SP123456" />
+      </div>
+
+      <div class="input-group">
+        <label>Curso</label>
+        <select [(ngModel)]="curso" [disabled]="!campus">
+          <option value="">{{ campus ? 'Selecione o curso' : 'Selecione um campus primeiro' }}</option>
+          <option *ngFor="let item of cursosDisponiveis" [value]="item">{{ item }}</option>
+        </select>
+      </div>
+
+      <p class="feedback" *ngIf="feedback">{{ feedback }}</p>
+
+      <div class="step-actions">
+        <button class="btn-secondary back-with-icon" type="button" (click)="voltarEtapa()"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>Voltar</button>
+        <button class="btn-register" type="button" (click)="cadastrar()">Cadastrar</button>
+      </div>
+    </ng-template>
 
     <div class="register-footer-links">
       <a class="footer-link" routerLink="/login">Já possui uma conta?</a>
-      <a class="footer-link" routerLink="/home">Voltar para apresentação</a>
+      <a class="footer-link back-with-icon" routerLink="/home"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>Voltar para apresentação</a>
     </div>
   </main>
 </div>

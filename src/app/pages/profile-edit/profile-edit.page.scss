@@ -9,10 +9,6 @@
 }
 
 .edit-card {
-  background: #ffffff;
-  border: 1px solid rgba(71, 43, 122, 0.12);
-  border-radius: 22px;
-  box-shadow: 0 16px 42px rgba(71, 43, 122, 0.09);
   padding: 28px;
 }
 
@@ -55,6 +51,7 @@ label {
 }
 
 input,
+select,
 textarea {
   border: 1px solid rgba(71, 43, 122, 0.22);
   border-radius: 14px;
@@ -122,6 +119,101 @@ label small {
   font-weight: 700;
 }
 
-input[readonly] {
+input[disabled] {
   background: #f7f3ff;
+  color: #5d477d;
+  opacity: 1;
+}
+
+label small a {
+  color: #472b7a;
+  font-weight: 900;
+}
+
+
+.photo-upload {
+  align-items: center;
+  display: flex;
+  gap: 14px;
+
+  img,
+  > span {
+    background: linear-gradient(135deg, #472b7a, #9b82c9);
+    border-radius: 50%;
+    color: #ffffff;
+    display: grid;
+    flex: 0 0 auto;
+    font-size: 28px;
+    font-weight: 900;
+    height: 76px;
+    object-fit: cover;
+    place-items: center;
+    text-transform: uppercase;
+    width: 76px;
+  }
+
+  input {
+    cursor: pointer;
+    flex: 1;
+  }
+}
+
+.input-affix {
+  align-items: center;
+  border: 1px solid rgba(71, 43, 122, 0.22);
+  border-radius: 14px;
+  display: flex;
+  overflow: hidden;
+
+  span {
+    color: #7b59b8;
+    font-weight: 900;
+    padding-left: 14px;
+  }
+
+  input {
+    border: 0;
+    min-width: 0;
+  }
+
+  &:focus-within {
+    border-color: #472b7a;
+    box-shadow: 0 0 0 2px rgba(71, 43, 122, 0.08);
+  }
+}
+
+.interest-field {
+  border: 0;
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+
+  legend {
+    color: #472b7a;
+    font-weight: 800;
+    margin-bottom: 2px;
+  }
+}
+
+.multi-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+
+  button {
+    background: #f7f3ff;
+    border: 1px solid rgba(71, 43, 122, 0.12);
+    border-radius: 999px;
+    color: #472b7a;
+    cursor: pointer;
+    font-weight: 800;
+    min-height: 38px;
+    padding: 0 13px;
+  }
+
+  button.selected {
+    background: #472b7a;
+    color: #ffffff;
+  }
 }

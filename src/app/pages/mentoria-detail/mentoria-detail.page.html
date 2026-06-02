@@ -2,7 +2,7 @@
 
 <ion-content [fullscreen]="true">
 <main class="app-page detail-page" *ngIf="mentoria; else notFound">
-  <a class="back-link" routerLink="/mentorias">Voltar para mentorias</a>
+  <a class="back-link back-with-icon" routerLink="/mentorias"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>Voltar para mentorias</a>
 
   <section class="detail-card">
     <div class="detail-copy">
@@ -12,27 +12,42 @@
       <div class="tags">
         <span *ngFor="let tag of mentoria.tags">{{ tag }}</span>
       </div>
+
+      <div class="mentoria-summary">
+        <article>
+          <strong>{{ mentoria.vagas }}</strong>
+          <span>vagas</span>
+        </article>
+        <article>
+          <strong>{{ mentoria.inscritas || 0 }}</strong>
+          <span>inscritas</span>
+        </article>
+        <article>
+          <strong>{{ mentoria.status || 'aberta' }}</strong>
+          <span>status</span>
+        </article>
+        <article>
+          <strong>{{ mentoria.formato }}</strong>
+          <span>formato</span>
+        </article>
+      </div>
+
+      <div class="participants" *ngIf="mentoria.participantes?.length">
+        <h2>Participantes</h2>
+        <span *ngFor="let participante of mentoria.participantes">{{ participante }}</span>
+      </div>
     </div>
 
     <aside>
       <h2>Detalhes</h2>
       <dl>
-        <div><dt>Mentora</dt><dd>{{ mentoria.mentora }}</dd></div>
-        <div><dt>Atuação</dt><dd>{{ mentoria.cargo }}</dd></div>
-        <div><dt>Data</dt><dd>{{ mentoria.data }}</dd></div>
-        <div><dt>Horário</dt><dd>{{ mentoria.horario }}</dd></div>
-        <div><dt>Formato</dt><dd>{{ mentoria.formato }}</dd></div>
+        <div><dt>Data</dt><dd>{{ mentoria.data }} às {{ mentoria.horario }}</dd></div>
+        <div><dt>Mentora</dt><dd>{{ mentoria.mentora }}<small>{{ mentoria.cargo }}</small></dd></div>
+        <div><dt>Link</dt><dd>{{ mentoria.local || 'Enviado por email' }}</dd></div>
         <div><dt>Duração</dt><dd>{{ mentoria.duracao || '1h' }}</dd></div>
-        <div><dt>Local/link</dt><dd>{{ mentoria.local || 'Definido pela mentora' }}</dd></div>
-        <div><dt>Status</dt><dd>{{ mentoria.status || 'aberta' }}</dd></div>
-        <div><dt>Vagas</dt><dd>{{ mentoria.vagas }}</dd></div>
-        <div><dt>Inscritas</dt><dd>{{ mentoria.inscritas || 0 }}</dd></div>
       </dl>
-      <div class="participants" *ngIf="mentoria.participantes?.length">
-        <h3>Participantes</h3>
-        <span *ngFor="let participante of mentoria.participantes">{{ participante }}</span>
-      </div>
-      <button type="button" [class.done]="inscrita" (click)="inscrever()">{{ inscrita ? 'Inscrição confirmada' : 'Inscrever-se' }}</button>
+      <button type="button" [class.done]="inscrita" (click)="inscrever()" [disabled]="inscrita">{{ inscrita ? 'Inscrição confirmada' : 'Inscrever-se' }}</button>
+      <button class="cancel-action" type="button" *ngIf="inscrita" (click)="cancelarInscricao()">Cancelar inscrição</button>
       <p class="feedback" *ngIf="feedback">{{ feedback }}</p>
     </aside>
   </section>
@@ -45,7 +60,7 @@
   <main class="app-page">
     <section class="empty">
       <h1>Mentoria não encontrada.</h1>
-      <p>Volte para a lista e escolha uma mentoria disponível no protótipo.</p>
+      <p>Volte para a lista e escolha uma mentoria disponível.</p>
       <a routerLink="/mentorias">Ver mentorias</a>
     </section>
   </main>

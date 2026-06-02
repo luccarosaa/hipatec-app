@@ -25,8 +25,18 @@ export const routes: Routes = [
   },
   {
     path: 'dashboard',
-    redirectTo: 'feed',
+    redirectTo: 'painel',
     pathMatch: 'full',
+  },
+  {
+    path: 'painel/itens/:id',
+    canActivate: [authGuard],
+    loadComponent: () => import('./pages/painel-detail/painel-detail.page').then(m => m.PainelDetailPage),
+  },
+  {
+    path: 'painel',
+    canActivate: [authGuard],
+    loadComponent: () => import('./pages/painel/painel.page').then(m => m.PainelPage),
   },
   {
     path: 'posts/:id',
@@ -60,8 +70,8 @@ export const routes: Routes = [
   },
   {
     path: 'vagas',
-    redirectTo: 'oportunidades',
-    pathMatch: 'full',
+    canActivate: [authGuard],
+    loadComponent: () => import('./pages/oportunidades/oportunidades.page').then(m => m.OportunidadesPage),
   },
   {
     path: 'apoio',
@@ -77,6 +87,16 @@ export const routes: Routes = [
     path: 'perfil/editar',
     canActivate: [authGuard],
     loadComponent: () => import('./pages/profile-edit/profile-edit.page').then(m => m.ProfileEditPage),
+  },
+  {
+    path: 'perfil/:username',
+    canActivate: [authGuard],
+    loadComponent: () => import('./pages/profile/profile.page').then(m => m.ProfilePage),
+  },
+  {
+    path: 'admin',
+    canActivate: [authGuard],
+    loadComponent: () => import('./pages/admin/admin.page').then(m => m.AdminPage),
   },
   {
     path: 'configuracoes',

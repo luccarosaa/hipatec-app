@@ -56,8 +56,11 @@ export class LoginPage implements OnInit {
             role: response.role || this.role,
             foto: response.foto,
             curso: response.curso,
+            campus: response.campus,
+            prontuario: response.prontuario,
             semestre: response.semestre,
             bio: response.bio,
+            isAdmin: response.isAdmin,
           });
           this.router.navigate([this.route.snapshot.queryParamMap.get('redirect') || '/feed']);
         },

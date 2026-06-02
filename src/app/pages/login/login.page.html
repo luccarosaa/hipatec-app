@@ -6,7 +6,7 @@
 
     <main>
       <p class="form-eyebrow">Acesse sua rede</p>
-      <h2 class="login-title">{{ role === 'estudantes' ? 'Login Estudante' : 'Login Mentora' }}</h2>
+      <h2 class="login-title">{{ role === 'administradoras' ? 'Login Administrador' : role === 'estudantes' ? 'Login Estudante' : 'Login Mentora' }}</h2>
 
       <ion-segment [value]="role" (ionChange)="switchRole($event)">
         <ion-segment-button value="estudantes">
@@ -14,6 +14,9 @@
         </ion-segment-button>
         <ion-segment-button value="mentoras">
           <ion-label>Mentora</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="administradoras">
+          <ion-label>Admin</ion-label>
         </ion-segment-button>
       </ion-segment>
 
@@ -32,7 +35,7 @@
       <button class="btn-login" (click)="login()">Fazer login</button>
 
       <div class="login-footer-links">
-        <a class="footer-link" routerLink="/home">Voltar para apresentação</a>
+        <a class="footer-link back-with-icon" routerLink="/home"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>Voltar para apresentação</a>
         <a class="footer-link" routerLink="/cadastro">Não possui cadastro?</a>
       </div>
     </main>

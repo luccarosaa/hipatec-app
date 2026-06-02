@@ -2,7 +2,7 @@
 
 <ion-content [fullscreen]="true">
 <main class="app-page post-detail-page" *ngIf="post; else notFound">
-  <a class="back-link" routerLink="/feed">Voltar ao feed</a>
+  <a class="back-link back-with-icon" routerLink="/feed"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>Voltar ao feed</a>
 
   <article class="post-card detail-card">
     <header>
@@ -14,7 +14,8 @@
       <small>{{ post.categoria }}</small>
     </header>
 
-    <p>{{ post.texto }}</p>
+    <p *ngIf="post.texto">{{ post.texto }}</p>
+    <img class="post-image" *ngIf="post.imagem" [src]="post.imagem" alt="Imagem anexada à publicação" />
 
     <footer>
       <button type="button" [class.active]="post.liked" (click)="curtir()">
@@ -23,7 +24,7 @@
       </button>
       <button type="button">
         <svg viewBox="0 0 24 24"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7A8.4 8.4 0 0 1 4 11.5a8.5 8.5 0 0 1 17 0Z"/></svg>
-        {{ post.comentarios }} comentários
+        {{ comments.length }} comentários
       </button>
       <button type="button" (click)="compartilhar()">
         <svg viewBox="0 0 24 24"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
@@ -46,10 +47,26 @@
   </section>
 
   <section class="comments-section">
-    <h2>Comentários</h2>
+    <h2>Comentários ({{ comments.length }})</h2>
     <article class="comment-card" *ngFor="let comment of comments">
-      <strong>{{ comment.autora }}</strong>
-      <span>{{ comment.data }}</span>
+      <div class="comment-head">
+        <div>
+          <a class="comment-author" [routerLink]="authorRoute(comment.autora)">{{ comment.autora }}</a>
+          <span>{{ comment.data }}</span>
+        </div>
+        <div class="comment-admin" *ngIf="isAdmin">
+          <button class="comment-admin-trigger" type="button" (click)="toggleAdminCommentMenu(comment.id, $event)" aria-label="Abrir opções de moderação">•••</button>
+          <div class="comment-admin-menu" *ngIf="openAdminCommentId === comment.id">
+            <button type="button" (click)="excluirComentario(comment)">Excluir comentário</button>
+            <strong>Bloquear usuário</strong>
+            <button type="button" (click)="bloquearUsuario(comment, '1 dia')">1 dia</button>
+            <button type="button" (click)="bloquearUsuario(comment, '1 semana')">1 semana</button>
+            <button type="button" (click)="bloquearUsuario(comment, '1 mês')">1 mês</button>
+            <button type="button" (click)="bloquearUsuario(comment, 'pra sempre')">Pra sempre</button>
+            <button class="danger" type="button" (click)="banirUsuario(comment)">Banir usuário</button>
+          </div>
+        </div>
+      </div>
       <p>{{ comment.texto }}</p>
     </article>
 
@@ -65,7 +82,7 @@
     <section class="empty-state standalone">
       <h1>Publicação não encontrada.</h1>
       <p>Volte ao feed para escolher uma publicação disponível.</p>
-      <a routerLink="/feed">Voltar ao feed</a>
+      <a class="back-with-icon" routerLink="/feed"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>Voltar ao feed</a>
     </section>
   </main>
 </ng-template>

@@ -1,0 +1,142 @@
+@use '../../shared/app-page';
+
+.feedback,
+.panel-section,
+.panel-card {
+  background: #ffffff;
+  border: 1px solid rgba(71, 43, 122, 0.12);
+  border-radius: 20px;
+  box-shadow: 0 14px 34px rgba(71, 43, 122, 0.08);
+}
+
+.feedback {
+  color: #472b7a;
+  font-weight: 800;
+  margin: 0 0 18px;
+  padding: 14px 16px;
+}
+
+.panel-section {
+  margin-bottom: 22px;
+  padding: 24px;
+}
+
+.compact-title {
+  margin-bottom: 12px;
+}
+
+.panel-grid {
+  display: grid;
+  gap: 18px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.panel-card {
+  box-shadow: none;
+  display: flex;
+  flex-direction: column;
+  min-height: 382px;
+  padding: 20px;
+}
+
+.eyebrow,
+.tags span,
+.tags small {
+  background: #fff3cd;
+  border-radius: 999px;
+  color: #472b7a;
+  display: inline-flex;
+  font-size: 12px;
+  font-weight: 900;
+  padding: 7px 10px;
+}
+
+.panel-card h3 {
+  color: #2f1b52;
+  font-size: 21px;
+  line-height: 1.2;
+  margin: 16px 0 10px;
+  min-height: 2.4em;
+}
+
+.panel-card p {
+  color: #5d477d;
+  display: -webkit-box;
+  line-height: 1.55;
+  min-height: calc(1.55em * 3);
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
+.panel-card small {
+  color: #7b59b8;
+  display: block;
+  font-weight: 800;
+  margin-top: 10px;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 8px;
+  margin: 14px 0 18px;
+  min-height: 31px;
+  overflow: hidden;
+}
+
+.tags span,
+.tags small {
+  background: #f7f3ff;
+  white-space: nowrap;
+}
+
+.card-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: auto;
+
+  a,
+  button {
+    align-items: center;
+    border-radius: 999px;
+    display: inline-flex;
+    font-weight: 900;
+    justify-content: center;
+    min-height: 40px;
+    padding: 0 14px;
+    text-decoration: none;
+  }
+
+  a,
+  .secondary-button,
+  button.done {
+    background: #ffffff;
+    border: 1px solid rgba(71, 43, 122, 0.18);
+    color: #472b7a;
+  }
+
+  button {
+    background: #472b7a;
+    border: 0;
+    color: #ffffff;
+    cursor: pointer;
+  }
+}
+
+.inline-empty {
+  box-shadow: none;
+}
+
+@media (max-width: 920px) {
+  .panel-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 620px) {
+  .card-actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+}

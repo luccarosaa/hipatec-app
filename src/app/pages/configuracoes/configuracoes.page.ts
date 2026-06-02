@@ -27,9 +27,11 @@ export class ConfiguracoesPage implements OnInit {
   confirmarSenha = '';
   emailFeedback = '';
   senhaFeedback = '';
+  preferenciasFeedback = '';
 
   ngOnInit() {
     this.email = this.auth.getCurrentUser()?.email || '';
+    this.carregarPreferencias();
   }
 
   salvarEmail() {
@@ -69,8 +71,43 @@ export class ConfiguracoesPage implements OnInit {
     }
   }
 
+  salvarPreferencias() {
+    const preferencias = {
+      emailNotificacoes: this.emailNotificacoes,
+      oportunidades: this.oportunidades,
+      perfilPublico: this.perfilPublico,
+      altoContraste: this.altoContraste,
+    };
+
+    try {
+      localStorage.setItem('hipatec_preferencias', JSON.stringify(preferencias));
+    } catch {
+      // Mantem a pagina funcional mesmo sem acesso ao localStorage.
+    }
+
+    this.preferenciasFeedback = 'Preferências salvas com sucesso.';
+  }
+
   sair() {
     this.auth.logout();
     this.router.navigate(['/home']);
   }
+
+  private carregarPreferencias() {
+    try {
+      const raw = localStorage.getItem('hipatec_preferencias');
+      if (!raw) {
+        return;
+      }
+
+      const preferencias = JSON.parse(raw);
+      this.emailNotificacoes = preferencias.emailNotificacoes ?? this.emailNotificacoes;
+      this.oportunidades = preferencias.oportunidades ?? this.oportunidades;
+      this.perfilPublico = preferencias.perfilPublico ?? this.perfilPublico;
+      this.altoContraste = preferencias.altoContraste ?? this.altoContraste;
+    } catch {
+      // Preferencias seguem com os valores padrao.
+    }
+  }
 }
+

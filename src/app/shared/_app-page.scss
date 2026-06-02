@@ -4,9 +4,9 @@
 }
 
 .app-page {
-  min-height: calc(100vh - 72px);
   background: linear-gradient(135deg, #fff3cd 0%, #ffffff 55%, #efe8ff 100%);
-  padding: 34px max(18px, calc((100vw - 1180px) / 2)) 80px;
+  box-sizing: border-box;
+  padding: 34px max(18px, calc((100vw - 1180px) / 2)) 48px;
 }
 
 .page-hero {
@@ -75,5 +75,148 @@
     > aside {
       width: auto;
     }
+  }
+}
+
+
+// Shared page primitives used by internal pages to avoid repeating card shells.
+.surface-card {
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(71, 43, 122, 0.12);
+  border-radius: 18px;
+  box-shadow: 0 14px 34px rgba(71, 43, 122, 0.08);
+}
+
+.icon-pill {
+  align-items: center;
+  display: inline-flex;
+  gap: 8px;
+
+  svg {
+    fill: none;
+    height: 17px;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 2;
+    width: 17px;
+  }
+}
+
+.back-with-icon {
+  align-items: center;
+  display: inline-flex;
+  gap: 7px;
+
+  svg {
+    fill: none;
+    height: 17px;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 2.2;
+    width: 17px;
+  }
+}
+
+.section-title-row {
+  align-items: center;
+  display: flex;
+  gap: 16px;
+  justify-content: space-between;
+  margin-bottom: 18px;
+
+  > div > span {
+    color: #7b59b8;
+    font-size: 12px;
+    font-weight: 900;
+    text-transform: uppercase;
+  }
+
+  h2 {
+    color: #2f1b52;
+    font-size: 26px;
+    line-height: 1.2;
+    margin: 4px 0 0;
+  }
+}
+
+.secondary-action,
+.primary-action-link {
+  align-items: center;
+  border-radius: 999px;
+  display: inline-flex;
+  font-weight: 900;
+  gap: 7px;
+  justify-content: center;
+  min-height: 42px;
+  padding: 0 16px;
+  text-decoration: none;
+  white-space: nowrap;
+
+  svg {
+    fill: none;
+    height: 17px;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 2.2;
+    width: 17px;
+  }
+}
+
+.secondary-action {
+  background: #ffffff;
+  border: 1px solid rgba(71, 43, 122, 0.18);
+  color: #472b7a;
+}
+
+.primary-action-link {
+  background: #472b7a;
+  color: #ffffff;
+}
+
+@media (max-width: 620px) {
+  .section-title-row {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
+.content-card {
+  background: #ffffff;
+  border: 1px solid rgba(71, 43, 122, 0.12);
+  border-radius: 18px;
+  box-shadow: 0 12px 34px rgba(71, 43, 122, 0.08);
+}
+
+.inline-pager {
+  align-items: center;
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  padding-top: 12px;
+
+  button {
+    background: #472b7a;
+    border: 0;
+    border-radius: 999px;
+    color: #ffffff;
+    cursor: pointer;
+    font-weight: 800;
+    min-height: 38px;
+    padding: 0 14px;
+  }
+
+  button:disabled {
+    background: #efe9fb;
+    color: #7b59b8;
+    cursor: not-allowed;
+  }
+
+  span {
+    color: #5d477d;
+    font-size: 13px;
+    font-weight: 800;
   }
 }

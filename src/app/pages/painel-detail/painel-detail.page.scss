@@ -1,0 +1,136 @@
+@use '../../shared/app-page';
+
+.back-link {
+  background: transparent;
+  border: 0;
+  color: #472b7a;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 900;
+  margin-bottom: 18px;
+  padding: 0;
+}
+
+.detail-shell {
+  display: grid;
+  gap: 28px;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  padding: 34px;
+}
+
+.eyebrow,
+.tags span {
+  background: #fff3cd;
+  border-radius: 999px;
+  color: #472b7a;
+  display: inline-flex;
+  font-size: 12px;
+  font-weight: 900;
+  padding: 8px 11px;
+  text-transform: capitalize;
+}
+
+.detail-main h1 {
+  color: #2f1b52;
+  font-size: clamp(36px, 5vw, 62px);
+  line-height: 1.03;
+  margin: 18px 0 14px;
+}
+
+.detail-main p {
+  color: #5d477d;
+  font-size: 17px;
+  line-height: 1.7;
+  margin: 0 0 16px;
+  max-width: 760px;
+}
+
+.detail-main .lead {
+  color: #472b7a;
+  font-size: 19px;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 22px 0;
+}
+
+.tags span {
+  background: #f7f3ff;
+  text-transform: none;
+}
+
+.detail-actions {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.detail-actions button,
+.empty-state button {
+  background: #472b7a;
+  border: 0;
+  border-radius: 999px;
+  color: #ffffff;
+  cursor: pointer;
+  font-weight: 900;
+  min-height: 44px;
+  padding: 0 18px;
+}
+
+.detail-actions button.secondary {
+  background: #fff3cd;
+  color: #472b7a;
+}
+
+.detail-actions span {
+  color: #472b7a;
+  font-weight: 800;
+}
+
+.detail-aside {
+  background: #faf7ff;
+  border-radius: 18px;
+  padding: 22px;
+}
+
+.detail-aside h2 {
+  color: #2f1b52;
+  font-size: 24px;
+  margin: 0 0 14px;
+}
+
+dl {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+}
+
+dl div {
+  border-top: 1px solid rgba(71, 43, 122, 0.12);
+  padding-top: 12px;
+}
+
+dt {
+  color: #7b59b8;
+  font-weight: 900;
+}
+
+dd {
+  color: #2f1b52;
+  margin: 4px 0 0;
+}
+
+.empty-state {
+  padding: 28px;
+}
+
+@media (max-width: 900px) {
+  .detail-shell {
+    grid-template-columns: 1fr;
+    padding: 24px;
+  }
+}

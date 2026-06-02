@@ -2,37 +2,49 @@
 
 <ion-content [fullscreen]="true">
 <main class="app-page edit-profile-page">
-  <a class="back-link" routerLink="/perfil">Voltar ao perfil</a>
+  <a class="back-link back-with-icon" routerLink="/perfil"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>Voltar ao perfil</a>
 
-  <section class="edit-card">
+  <section class="edit-card surface-card">
     <div class="section-heading">
       <span>Editar perfil</span>
       <h1>Atualize como você aparece na comunidade</h1>
-      <p>As alterações são salvas localmente neste protótipo.</p>
+      <p>Mantenha seus dados atualizados para fortalecer sua presença na comunidade.</p>
     </div>
 
     <form (ngSubmit)="salvar()">
       <label>
-        Foto de perfil mockada
-        <input type="url" [(ngModel)]="user.foto" name="foto" placeholder="https://exemplo.com/foto.jpg" />
+        Foto de perfil
+        <div class="photo-upload">
+          <img *ngIf="user.foto" [src]="user.foto" alt="Prévia da foto de perfil" />
+          <span *ngIf="!user.foto">{{ (user.nome || 'H').slice(0, 1) }}</span>
+          <input type="file" accept="image/*" (change)="onFotoSelecionada($event)" />
+        </div>
       </label>
+
       <label>
         Nome
         <input type="text" [(ngModel)]="user.nome" name="nome" />
       </label>
+
       <label>
         Nome de usuário
-        <input type="text" [(ngModel)]="user.username" name="username" placeholder="Ex: anaclara" />
+        <div class="input-affix">
+          <span>@</span>
+          <input type="text" [(ngModel)]="user.username" name="username" placeholder="anaclara" />
+        </div>
       </label>
+
       <label>
         Email cadastrado
-        <input type="email" [value]="user.email" readonly />
-        <small>Para alterar o e-mail, acesse Configurações.</small>
+        <input type="email" [value]="user.email" disabled />
+        <small>Para alterar o e-mail, acesse <a routerLink="/configuracoes">Configurações</a>.</small>
       </label>
+
       <label>
         Biografia
         <textarea [(ngModel)]="user.bio" name="bio" rows="4"></textarea>
       </label>
+
       <div class="form-grid">
         <label>
           Curso
@@ -40,17 +52,31 @@
         </label>
         <label>
           Semestre
-          <input type="text" [(ngModel)]="user.semestre" name="semestre" />
+          <select [(ngModel)]="user.semestre" name="semestre">
+            <option value="">Selecione o semestre</option>
+            <option *ngFor="let semestre of semestres" [value]="semestre">{{ semestre }}</option>
+          </select>
         </label>
       </div>
-      <label>
-        Áreas de interesse
-        <input type="text" [(ngModel)]="interesses" name="interesses" placeholder="Frontend, Dados, Carreira" />
-      </label>
+
+      <fieldset class="interest-field">
+        <legend>Áreas de interesse</legend>
+        <div class="multi-options">
+          <button
+            type="button"
+            *ngFor="let area of areasInteresse"
+            [class.selected]="interessesSelecionados.includes(area)"
+            (click)="toggleInteresse(area)">
+            {{ area }}
+          </button>
+        </div>
+      </fieldset>
+
       <label>
         Habilidades técnicas
         <input type="text" [(ngModel)]="habilidades" name="habilidades" placeholder="HTML, CSS, SQL" />
       </label>
+
       <label>
         Links
         <input type="text" [(ngModel)]="user.links" name="links" placeholder="GitHub, LinkedIn ou portfólio" />

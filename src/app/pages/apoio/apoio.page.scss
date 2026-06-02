@@ -16,6 +16,46 @@
   padding: 24px;
 }
 
+.support-card {
+  display: flex;
+  flex-direction: column;
+  min-height: 260px;
+
+  h2 {
+    min-height: 2.35em;
+  }
+
+  p {
+    display: -webkit-box;
+    min-height: calc(1.65em * 3);
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+  }
+
+  button {
+    align-self: flex-start;
+    margin-top: auto;
+  }
+}
+
+.more-guides {
+  display: flex;
+  justify-content: center;
+  margin: -4px 0 24px;
+
+  a {
+    border: 1px solid rgba(71, 43, 122, 0.18);
+    border-radius: 999px;
+    color: #472b7a;
+    font-weight: 900;
+    min-height: 42px;
+    padding: 11px 18px;
+    text-decoration: none;
+  }
+}
+
+
 .support-card h2,
 .support-form h2 {
   color: #2f1b52;
