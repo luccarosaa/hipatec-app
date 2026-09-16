@@ -1,0 +1,121 @@
+<div class="gradient-bg">
+  <div class="container">
+    <div class="logo-box">
+      <img src="assets/logo_hipatec_roxo.png" alt="Hipatec" class="logo-img" />
+    </div>
+
+    <main aria-labelledby="recuperacao-titulo">
+      <h2 id="recuperacao-titulo" class="login-title">
+        {{ redefinir ? 'Criar nova senha' : 'Recuperar senha' }}
+      </h2>
+
+      <div *ngIf="concluido" role="status">
+        <p *ngIf="!redefinir">
+          Se houver uma conta com esse e-mail e perfil, você receberá um link para
+          criar uma nova senha. Confira também a pasta de spam.
+        </p>
+        <p *ngIf="redefinir">
+          Senha alterada com sucesso! Entre com sua nova senha.
+        </p>
+      </div>
+
+      <p *ngIf="redefinir && !linkValido && !concluido">
+        Abra o link recebido por e-mail ou solicite um novo link para continuar.
+      </p>
+
+      <form
+        *ngIf="!concluido && (!redefinir || linkValido)"
+        #form="ngForm"
+        (ngSubmit)="enviar(form)"
+        [attr.aria-busy]="enviando"
+      >
+        <ng-container *ngIf="!redefinir">
+          <p>Informe o e-mail do cadastro. O link será válido por 30 minutos.</p>
+
+          <ion-segment
+            name="perfil"
+            [(ngModel)]="perfil"
+            [disabled]="enviando"
+            aria-label="Perfil da conta"
+          >
+            <ion-segment-button value="estudantes">
+              <ion-label>Estudantes</ion-label>
+            </ion-segment-button>
+            <ion-segment-button value="mentoras">
+              <ion-label>Mentoras</ion-label>
+            </ion-segment-button>
+          </ion-segment>
+
+          <div class="input-group">
+            <label for="email">E-mail</label>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              [(ngModel)]="email"
+              [disabled]="enviando"
+              required
+              email
+              maxlength="254"
+              autocomplete="email"
+              placeholder="Digite seu e-mail"
+            />
+          </div>
+        </ng-container>
+
+        <ng-container *ngIf="redefinir">
+          <p id="senha-ajuda">Crie uma senha com pelo menos 8 caracteres.</p>
+
+          <div class="input-group">
+            <label for="senha">Nova senha</label>
+            <input
+              id="senha"
+              name="senha"
+              type="password"
+              [(ngModel)]="senha"
+              [disabled]="enviando"
+              required
+              minlength="8"
+              maxlength="72"
+              autocomplete="new-password"
+              aria-describedby="senha-ajuda"
+              placeholder="Digite sua nova senha"
+            />
+          </div>
+
+          <div class="input-group">
+            <label for="confirmacao">Confirme a nova senha</label>
+            <input
+              id="confirmacao"
+              name="confirmacao"
+              type="password"
+              [(ngModel)]="confirmacao"
+              [disabled]="enviando"
+              required
+              minlength="8"
+              maxlength="72"
+              autocomplete="new-password"
+              placeholder="Repita sua nova senha"
+            />
+          </div>
+        </ng-container>
+
+        <button class="btn-login" type="submit" [disabled]="enviando">
+          {{ enviando ? 'Aguarde…' : (redefinir ? 'Salvar nova senha' : 'Enviar link de recuperação') }}
+        </button>
+      </form>
+
+      <p *ngIf="erro" role="alert">{{ erro }}</p>
+      <div class="login-footer-links">
+        <a
+          *ngIf="redefinir && !linkValido && !concluido"
+          class="footer-link"
+          routerLink="/recuperar-senha"
+        >
+          Solicitar novo link
+        </a>
+        <a class="footer-link" routerLink="/login">Voltar ao login</a>
+      </div>
+    </main>
+  </div>
+</div>

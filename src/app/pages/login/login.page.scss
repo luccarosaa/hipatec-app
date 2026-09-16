@@ -1,3 +1,7 @@
+:host {
+  overflow-y: auto;
+}
+
 .gradient-bg {
   width: 100vw;
   height: 100vh;
@@ -27,6 +31,7 @@
 
 
 main {
+  color: #472b7a;
   background: #ffffff;
   border-radius: 24px;
   box-shadow: 0 15px 40px rgba(71, 43, 122, 0.15);
@@ -119,6 +124,11 @@ main {
   &:active {
     transform: scale(0.98);
   }
+
+  &:disabled {
+    opacity: 0.65;
+    cursor: wait;
+  }
 }
 
 
@@ -161,4 +171,39 @@ ion-segment{
 
 h2.login-title{
   color: #472b7a;
+}
+
+[role="alert"] {
+  color: #a01832;
+}
+
+// O mesmo ajuste atende login e recuperação em telas pequenas.
+@media (max-width: 600px), (max-height: 700px) {
+  .gradient-bg {
+    height: auto;
+    min-height: 100dvh;
+  }
+
+  .container {
+    height: auto;
+    min-height: calc(100dvh - 32px);
+    max-height: none;
+    margin: 16px;
+    padding: 24px 16px;
+  }
+
+  .logo-box {
+    max-width: 100%;
+    margin-bottom: 24px;
+
+    .logo-img {
+      max-width: 100%;
+      height: auto;
+      max-height: 110px;
+    }
+  }
+
+  main {
+    padding: 24px;
+  }
 }

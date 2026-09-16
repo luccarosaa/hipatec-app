@@ -1,10 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-// import { HttpClientModule } from '@angular/common/http';
-import { Router, RouterLink } from '@angular/router'; // aqui faltou importar o RouterLink
+import { Router, RouterLink } from '@angular/router';
 import { IonLabel, IonSegment, IonSegmentButton } from '@ionic/angular/standalone';
-import { environment } from '../../../environments/environment';
 import { AuthService } from '../../services/auth.service';
 
 
@@ -13,18 +11,15 @@ import { AuthService } from '../../services/auth.service';
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
   standalone: true,
-  imports: [IonLabel, IonSegment, IonSegmentButton, CommonModule, FormsModule, RouterLink] // adicionei o RouterLink aqui
+  imports: [IonLabel, IonSegment, IonSegmentButton, CommonModule, FormsModule, RouterLink]
 })
-export class LoginPage implements OnInit {
+export class LoginPage {
+  private readonly auth = inject(AuthService);
+  private readonly router = inject(Router);
 
   role: 'estudantes' | 'mentoras' = 'estudantes';
   email = '';
   password = '';
-
-  constructor(private auth: AuthService, private router: Router) { } // isso aqui precisa estar em todas? acredito que sim
-
-  ngOnInit() {
-  }
 
   switchRole(ev: any) {
     this.role = ev.detail?.value || 'estudantes';
@@ -42,9 +37,6 @@ export class LoginPage implements OnInit {
       .subscribe({
         next: (id) => {
 
-          // alert(`Login successful for ${this.role}`);
-
-          console.log('Login successful, received ID:', id);
           localStorage.setItem('userRole', this.role);
           localStorage.setItem('userId', id.toString());
 
