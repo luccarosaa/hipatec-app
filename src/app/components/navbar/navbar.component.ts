@@ -3,7 +3,8 @@ import { IonicModule } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { PerfilService } from '../../services/perfil.service';
-
+import { addIcons } from 'ionicons';
+import { personOutline, settingsOutline, logOutOutline } from 'ionicons/icons';
 
 @Component({
   selector: 'app-navbar',
@@ -17,7 +18,9 @@ export class NavbarComponent  implements OnInit {
   public userROLE: string = '';
   public profileImage: string = 'https://ionicframework.com/docs/img/demos/avatar.svg';
   
-  constructor(private router: Router, private perfilService: PerfilService) { }
+  constructor(public router: Router, private perfilService: PerfilService) { 
+    addIcons({ personOutline, settingsOutline, logOutOutline });
+  }
 
   ngOnInit() {
     this.loadUserProfile();
@@ -44,18 +47,29 @@ export class NavbarComponent  implements OnInit {
     }
   }
 
-  goToProfile() {
-    // aqui você pode usar o Router para navegar para a página de perfil
-    // por exemplo: this.router.navigate(['/profile']);
-    this.router.navigate(['/profile']); 
+  goToProfile(popover: any) {
+    popover.dismiss().then(() => {
+      this.router.navigate(['/profile']); // Coloque a rota correta do seu perfil
+    });
   }
-  goToMentoria() {
-    // aqui você pode usar o Router para navegar para a página de mentoria
-    // por exemplo: this.router.navigate(['/mentoria']);
-    this.router.navigate(['/mentorias']); 
+  goToMentoria(popover: any) {
+    popover.dismiss().then(() => {
+      this.router.navigate(['/mentorias']);
+    });
   }
   goToHome() {
-    this.router.navigate(['/home']); 
+    this.router.navigate(['/home']); // Ajuste a rota se necessário
+  }
+  goToSettings(popover: any) {
+    popover.dismiss().then(() => { 
+      // Lógica futura para configurações
+    });
+  }
+  logout(popover: any) {
+    popover.dismiss().then(() => {
+      // Lógica futura de limpeza de token/sessão e redirecionamento para o login
+      console.log('Saindo da conta...');
+    });
   }
 
 }

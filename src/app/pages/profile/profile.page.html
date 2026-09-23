@@ -7,32 +7,35 @@
       <header class="profile-header">
         
         <div class="cover-banner">
-          <img src="{{ perfil.background || '../../../assets/header_perfil.png' }}" alt="Banner do perfil" />
+          <!-- Uso do ?. e fallback com || caso venha nulo do banco para inserção da lógica futura-->
+          <img [src]="perfil?.background || '../../../assets/header_perfil.png'" alt="Banner do perfil" />
         </div>
 
         <div class="profile-info-container">
           <div class="avatar-box">
-            <img src="{{ perfil.pfp || '../../../assets/avatar-placeholder.png' }}" alt="{{ perfil.nome }}" class="profile-avatar" />
+            <!-- Uso do ?. e fallback para foto padrão -->
+            <img [src]="perfil?.pfp || '../../../assets/avatar-placeholder.png'" [alt]="perfil?.nome || 'Usuário'" class="profile-avatar" />
           </div>
           
           <div class="profile-details">
             <div class="user-meta">
-              <h2 class="user-name">{{ perfil.nome }}</h2>
-              <p class="user-username">@{{ perfil.usuario}}</p>
+              <!-- Adicionado o ?. em todas as propriedades do perfil -->
+              <h2 class="user-name">{{ perfil?.nome || 'Carregando...' }}</h2>
+              <p class="user-username">@{{ perfil?.usuario || 'usuario' }}</p>
               <p class="user-role">{{ userRole }} - IFSP Pirituba</p>
             </div>
 
             <div class="profile-stats">
               <div class="stats-item">
-                <strong class="num-posts">{{ perfil.num_publicacoes }}</strong> 
+                <strong class="num-posts">{{ perfil?.num_publicacoes || 0 }}</strong> 
                 <span>posts</span>
               </div>
               <div class="stats-item">
-                <strong class="num-seguidores">{{ perfil.num_seguidores }}</strong>
+                <strong class="num-seguidores">{{ perfil?.num_seguidores || 0 }}</strong>
                 <span>seguidores</span>
               </div>
               <div class="stats-item">
-                <strong class="num-seguindo">{{ perfil.num_seguindo }}</strong> 
+                <strong class="num-seguindo">{{ perfil?.num_seguindo || 0 }}</strong> 
                 <span>seguindo</span>
               </div>
             </div>
@@ -41,7 +44,7 @@
         
         <div class="profile-bio-row">
           <p class="user-bio">
-            {{ perfil.biografia }}
+            {{ perfil?.biografia || 'Nenhuma biografia informada.' }}
           </p>
           <button class="btn-edit-profile" (click)="editProfile()">editar perfil</button>
         </div>

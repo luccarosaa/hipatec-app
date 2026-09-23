@@ -14,22 +14,49 @@
 
     <ion-buttons slot="end">
       <ion-button (click)="goToHome()" fill="clear">home</ion-button>
-
-      <ion-button id="popover-button" fill="clear">aprendizado</ion-button>
       
-      <!-- <ion-button routerLink="/vagas" fill="clear">vagas</ion-button> -->
+      <!-- Substituição do ID por evento passando $event -->
+      <ion-button (click)="aprendizadoPopover.present($event)" fill="clear">aprendizado</ion-button>
 
-      <ion-avatar class="user-avatar" (click)="goToProfile()">
+      <!-- Substituição do ID por evento passando $event -->
+      <ion-avatar class="user-avatar" (click)="menuPopover.present($event)" style="cursor: pointer;">
         <img [src]="profileImage" />
       </ion-avatar>
     </ion-buttons>
-
-    <ion-popover trigger="popover-button" triggerAction="click">
+      
+    <!-- Popover do Perfil com referência local #menuPopover -->
+    <ion-popover #menuPopover class="perfil-popover" side="bottom" alignment="end">
       <ng-template>
         <ion-content>
           <ion-list lines="none">
-            <ion-item [button]="true" (click)="goToMentoria()">painel</ion-item>
-            <!-- <ion-item [button]="true" routerLink="/meu-aprendizado">meu aprendizado</ion-item> -->
+            
+            <!-- *ngIf verifica a rota para esconder o botão. Passe o menuPopover para a função -->
+            <ion-item button (click)="goToProfile(menuPopover)" *ngIf="router.url !== '/profile'">
+              <ion-icon name="person-outline" slot="start"></ion-icon>
+              <ion-label>Meu perfil</ion-label>
+            </ion-item>
+
+            <ion-item button (click)="goToSettings(menuPopover)">
+              <ion-icon name="settings-outline" slot="start"></ion-icon>
+              <ion-label>Configurações</ion-label>
+            </ion-item>
+
+            <ion-item button (click)="logout(menuPopover)" class="item-sair">
+              <ion-icon name="log-out-outline" slot="start"></ion-icon>
+              <ion-label>Sair</ion-label>
+            </ion-item>
+
+          </ion-list>
+        </ion-content>
+      </ng-template>
+    </ion-popover>
+
+    <!-- Popover de Aprendizado com referência local #aprendizadoPopover -->
+    <ion-popover #aprendizadoPopover>
+      <ng-template>
+        <ion-content>
+          <ion-list lines="none">
+            <ion-item [button]="true" (click)="goToMentoria(aprendizadoPopover)">painel</ion-item>
           </ion-list>
         </ion-content>
       </ng-template>
