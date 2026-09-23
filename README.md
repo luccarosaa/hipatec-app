@@ -33,8 +33,8 @@ Para executar o backend, consulte o README de `hipatec/hipatec`: a base examinad
 | `/` | Apresentação pública da Hipatec |
 | `/home` | Feed existente, também destino após login |
 | `/login` | Login de estudante ou mentora |
-| `/recuperar-senha` | Solicitação de link de recuperação, para estudante ou mentora |
-| `/redefinir-senha` | Nova senha pelo token recebido por e-mail |
+| `/forgot-password` | Solicitação de recuperação integrada ao backend |
+| `/redefinir-senha` | Definição da nova senha pelo link recebido |
 | `/cadastro` | Cadastro |
 | `/profile` | Perfil |
 | `/mentorias` | Listagem inicial de mentorias |
@@ -108,33 +108,17 @@ Para revisar manualmente, abra `/` em computador e celular, use o menu, Escape e
 
 ## Recuperação de senha
 
-No login, **Esqueceu sua senha?** abre `/recuperar-senha` mantendo o perfil selecionado. A página usa diretamente `login.page.scss`, a mesma estrutura visual e o mesmo seletor de perfis do login. Não há SCSS separado para recuperação; os formulários mudam conforme a etapa. A resposta ao pedido é genérica para não informar se existe uma conta. O link recebido abre `/redefinir-senha#token=...`; o token é removido da barra de endereço e enviado somente no corpo do POST. Atualizar essa página exige reabrir o link do e-mail.
+A tela `forgot-password` usa como base o visual da main (`6b71d8a`), agora integrada aos endpoints reais de recuperação e redefinição. O login permanece igual ao da main. A implementação antiga do fork não foi restaurada.
 
-A usuária confirma a nova senha e volta ao login. A interface trata confirmação diferente, campos inválidos, envio em andamento, limite de tentativas, falha de conexão e link inválido/expirado/utilizado. O prazo de 30 minutos e o uso único são verificados pelo backend. A senha aceita pelo backend tem pelo menos 8 caracteres e no máximo 72 bytes UTF-8; acentos e emojis podem ocupar mais de um byte.
+A solicitação envia apenas o e-mail. O backend procura nos dois perfis e só gera link se encontrar exatamente uma conta; a tela não exige escolher estudante ou mentora. A confirmação aparece apenas após o backend aceitar a solicitação. Ao entrar na tela, `ionViewWillEnter` limpa os dados e o estado de confirmação; ao sair, a requisição pendente é cancelada para evitar que sua resposta altere uma próxima visita. A confirmação não comprova entrega do e-mail nem existência da conta.
 
-| Arquivos alterados | Finalidade |
-| --- | --- |
-| `src/app/pages/login/login.page.html` | Liga o link de recuperação à nova rota |
-| `src/app/app.routes.ts` | Rotas de solicitação e redefinição |
-| `src/app/services/auth.service.ts` | Chamadas POST dos dois endpoints |
-| `tsconfig.json`, `.eslintrc.json` | Encaminham editor e lint às configurações existentes da aplicação e dos testes Jasmine |
-| `src/app/pages/recuperar-senha/recuperar-senha.page.ts` | Estado e lógica do formulário |
-| `src/app/pages/recuperar-senha/recuperar-senha.page.html` | Formulários e mensagens em português |
-| `src/app/pages/login/login.page.scss` | Estilo único para login e recuperação, incluindo adaptação a telas pequenas |
-| `src/app/pages/login/login.page.ts` | Injeção compatível com o lint e remoção do ciclo de vida vazio |
-| `src/app/pages/login/login.page.spec.ts` | Configuração de HTTP e testes do login e do link de recuperação |
-| `src/app/pages/recuperar-senha/recuperar-senha.page.spec.ts` | Testes da interação e do contrato HTTP |
-| `README.md` | Configuração e roteiro de teste |
+O link do e-mail abre `/redefinir-senha#token=...`, usando a mesma identidade visual para informar e confirmar a nova senha. O fragmento é removido da barra e o token é enviado no corpo do POST. São tratados erros de conexão, limite de tentativas, senha inválida e link expirado ou já utilizado.
 
 ```bash
-npm test -- --watch=false --browsers=ChromeHeadless --include='src/app/pages/recuperar-senha/recuperar-senha.page.spec.ts'
+npm test -- --watch=false --browsers=ChromeHeadless --include='src/app/pages/forgot-password/*.spec.ts'
 ```
 
-Para testar o envio, execute o backend e a caixa local Mailpit conforme o README do backend, e use uma conta de teste existente. O frontend deve estar em `http://localhost:8100`, que é a origem permitida e a base do link no e-mail por padrão. As credenciais SMTP ficam somente no backend. A equipe ainda não definiu o provedor de envio real.
-
-Se o editor indicar que `describe`, `it`, `expect` ou `spyOn` não existem, confira a associação do arquivo ao `tsconfig.spec.json`. O `tsconfig.json` referencia as configurações de aplicação e testes, e `@types/jasmine` já está instalado. Após atualizar a configuração, use **TypeScript: Restart TS Server** na paleta do VS Code caso os diagnósticos antigos persistam. Não é necessário instalar Jest ou Mocha.
-
-Validação em 16/09/2026: **8 testes da recuperação e 2 do login passaram**, assim como a compilação de desenvolvimento. Os arquivos de login, recuperação, serviço de autenticação e rotas passaram no lint; ainda há erros preexistentes em outras áreas do projeto. O build de produção continua bloqueado pelos limites de CSS preexistentes em `home.page.scss` e `profile.page.scss`. A tela de recuperação foi conferida em viewport de celular.
+Seis testes de interação passaram, incluindo reentrada na tela e cancelamento do pedido ao sair. A compilação de desenvolvimento também passou. O ambiente local e os provedores de e-mail são configurados no backend; consulte seu README.
 
 ## Trabalho em equipe
 

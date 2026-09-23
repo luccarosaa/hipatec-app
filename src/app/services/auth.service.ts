@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
@@ -7,10 +7,10 @@ import { environment } from '../../environments/environment';
   providedIn: 'root'
 })
 export class AuthService {
-  private readonly http = inject(HttpClient);
+  constructor(private http: HttpClient) { }
 
-  solicitarRecuperacao(perfil: 'estudantes' | 'mentoras', email: string): Observable<void> {
-    return this.http.post<void>(`${environment.apiUrl}auth/recuperacao-senha`, { perfil, email });
+  solicitarRecuperacao(email: string): Observable<void> {
+    return this.http.post<void>(`${environment.apiUrl}auth/recuperacao-senha`, { email });
   }
 
   redefinirSenha(token: string, senha: string): Observable<void> {
